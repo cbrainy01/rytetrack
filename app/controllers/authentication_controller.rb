@@ -3,6 +3,8 @@ class AuthenticationController < ApplicationController
     skip_before_action :authorize, only: :login
 
     def login
+        # after authenticating user, create a token for that user
+
         user = User.find_by(username: params[:username])
         if user && user.authenticate(params[:password])
          payload = {user_id: user.id}
