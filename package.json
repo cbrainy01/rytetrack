@@ -9,5 +9,11 @@
     "clean": "rm -rf public",
     "deploy": "cp -a client/build/. public/",
     "heroku-postbuild": "npm run clean && npm run build && npm run deploy"
+  },
+  "dependencies": {
+    "chart.js": "^3.5.1",
+    "react-chartjs-2": "^3.0.5",
+    "react-redux": "^7.2.5",
+    "redux": "^4.1.1"
   }
 }
