@@ -6,6 +6,7 @@ import Signup from "./Signup"
 import Home from "./Home"
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './state/userSlice';
+import Loader from 'react-spinners/RingLoader';
 
 
 function App() {
@@ -21,7 +22,7 @@ function App() {
     <>
       <p>Rytetrack</p>
       <Navbar/>
-      
+      {/* <Loader/> */}
       <Switch>
         <Route exact path="/signup">
           <Signup /*onSignUp={handleSignUp}*/ />

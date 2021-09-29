@@ -101,6 +101,8 @@ const userSlice = createSlice({
         
         userLogout(state, action) {
             localStorage.removeItem("token")
+            state.user = []
+            // also empty out user array at state.user
         }
 
     },
