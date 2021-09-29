@@ -3,9 +3,12 @@ import React from 'react'
 import {useForm} from "react-hook-form"
 import {signUpUserAsync} from "./state/userSlice"
 import {useDispatch, useSelector} from "react-redux"
-
+import { Redirect } from "react-router-dom"
+import { useHistory } from 'react-router'
 
 function Signup() {
+
+    const history = useHistory()
     const user = useSelector(state => state.user.entities)
     console.log("USER: ", user)
     const dispatch = useDispatch()
@@ -17,14 +20,9 @@ function Signup() {
     // const register = useForm().register
     // const handleSubmit = useForm().register
 
-
-
-    function onSubmit(data, e) {
-        e.preventDefault();
-        console.log(data)
-        dispatch( signUpUserAsync(data) )
-        // dispatch action for signing in
-    }
+    // if(user.first === 'sucessfully signed up') {
+    //     <Redirect from="/signup" to="/login"/>
+    // }
 
     return (    
     <div>

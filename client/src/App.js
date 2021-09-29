@@ -12,11 +12,14 @@ function App() {
     <>
       <p>Rytetrack</p>
       <Navbar/>
+      
       <Switch>
         <Route exact path="/signup">
           <Signup /*onSignUp={handleSignUp}*/ />
         </Route>
-      
+        <Route exact path="/login">
+          <Login /*onLogin={handleLogin}*/ />
+        </Route>
         <Route exact path="/">
           {/* <Home/> */}
         </Route>
@@ -26,6 +29,4 @@ function App() {
 }
 
 export default App
-  // <Route exact path="/login">
-  //         <Login /*onLogin={handleLogin}*/ />
-  //       </Route>
+ 

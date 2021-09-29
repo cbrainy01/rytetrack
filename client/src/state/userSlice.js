@@ -10,8 +10,27 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 //       .then( r => r.json() )
 //       .then( rData => { console.log("RDATA IS: ", rData); return rData} )
 // })
+export const userLoginAsync = createAsyncThunk("login/userLoginAsync",
+    async (loginData) => {
+
+        const response = await fetch("/login", {
+            method: "POST",
+            headers: {"Content-Type": "application/json",},
+            body: JSON.stringify(loginData)
+        })
+        // WHAT RESPONSE LOOKS LIKE
+        // {
+        //     "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMX0.5zOZGKbQcwKG-NTPOwQFUGAqqRDoaL79zRzUM4X22ck"
+        // }
+        if(response.ok) {
+            const rData = await response.json();
+            return rData;
+        }
+    }    
+)
+
 export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync", 
-    async (signupData) => {
+    async (signupData, history) => {
 
         const response = await fetch('/users', {
             method: "POST",
@@ -35,7 +54,6 @@ export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync",
 
 
         if(response.ok) {
-            // console.log("JSON RESP: ", response.json())
             const rData = await response.json();
             return rData;
         }
@@ -46,7 +64,7 @@ const initialState = {
     entities: [],
     status: "idle",
     page: "/",
-    reject_status: ""
+    errors: []
 }
 
 const userSlice = createSlice({
@@ -54,10 +72,9 @@ const userSlice = createSlice({
     initialState: initialState,
     reducers: {  
         
-        // userSignUp(state, action) {
-        //     state.entities = action.payload
-        //     state.page = "/"
-        // }
+        userLogout(state, action) {
+            localStorage.removeItem("token")
+        }
 
     },
     extraReducers: {
@@ -68,9 +85,13 @@ const userSlice = createSlice({
         // },
         [signUpUserAsync.fulfilled](state, action) {state.entities.push("sucessfully signed up"); state.status = "idle"},
         [signUpUserAsync.pending](state) {state.status = "loading"},
-        [signUpUserAsync.rejected](state) {state.reject_status = "rejected for some reason"},
+        [signUpUserAsync.rejected](state) {state.errors.push("rejected for some reason") },
+
+        [userLoginAsync.fulfilled](state, action) {localStorage.setItem("token", action.payload.token)},//!!!!!!!!
+        [userLoginAsync.pending](state) {state.status = "loading"},
+        [userLoginAsync.rejected](state) {state.errors.push("rejected for some reason") }
     }
 })
 
-// export const { userSignUp } = userSlice.actions
+export const { userLogout } = userSlice.actions
 export default userSlice.reducer
