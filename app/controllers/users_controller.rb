@@ -4,7 +4,8 @@ class UsersController < ApplicationController
 
     def create
         user = User.create!(user_params)
-        render json: { user_id: user.id }, status: :created  
+        # byebug
+        render json: { message: "user sucessfully signed up", created_user: user }, status: :created  
     end
 
     def show
