@@ -10,6 +10,33 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 //       .then( r => r.json() )
 //       .then( rData => { console.log("RDATA IS: ", rData); return rData} )
 // })
+export const fetchUserInfo = createAsyncThunk("me/fetchUserInfo",
+    async (userToken) => {
+        const response = await fetch("/me", {
+            method: "GET",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${userToken}`,}
+        })
+        if(response.ok) {
+            const rData = await response.json();
+            return rData;
+        }
+
+    }
+                     // RESPONSE SHOULD LOOK LIKE THIS
+    // {
+    //     "user": {
+    //         "id": 11,
+    //         "first_name": "lilly",
+    //         "last_name": "sing",
+    //         "username": "lillysing",
+    //         "email": "lsing@gmail.com",
+    //         "password_digest": "$2a$12$EohBRP5EMvP3n1wRZKCmzestQMysVMgz9PwPu6tEOuarFW9OsERxi",
+    //         "created_at": "2021-09-29T03:25:41.158Z",
+    //         "updated_at": "2021-09-29T03:25:41.158Z"
+    //     }
+    // }
+)
+
 export const userLoginAsync = createAsyncThunk("login/userLoginAsync",
     async (loginData) => {
 
@@ -62,8 +89,8 @@ export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync",
 
 const initialState = {
     entities: [],
+    user: [],
     status: "idle",
-    page: "/",
     errors: []
 }
 
@@ -87,9 +114,13 @@ const userSlice = createSlice({
         [signUpUserAsync.pending](state) {state.status = "loading"},
         [signUpUserAsync.rejected](state) {state.errors.push("rejected for some reason") },
 
-        [userLoginAsync.fulfilled](state, action) {localStorage.setItem("token", action.payload.token)},//!!!!!!!!
+        [userLoginAsync.fulfilled](state, action) {localStorage.setItem("token", action.payload.token); state.status = "idle"},//!!!!!!!!
         [userLoginAsync.pending](state) {state.status = "loading"},
-        [userLoginAsync.rejected](state) {state.errors.push("rejected for some reason") }
+        [userLoginAsync.rejected](state) {state.errors.push("rejected for some reason") },
+
+        [fetchUserInfo.fulfilled](state, action) { /*push user info into entities*/state.user.push(action.payload.user) },
+        [fetchUserInfo.pending](state) {state.status = "idle"},
+        [fetchUserInfo.rejected](state) {state.errors.push("rejected for some reason") },
     }
 })
 
