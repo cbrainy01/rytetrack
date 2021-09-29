@@ -4,8 +4,11 @@ class UsersController < ApplicationController
 
     def create
         user = User.create!(user_params)
-        # byebug
-        render json: { message: "user sucessfully signed up", created_user: user }, status: :created  
+
+        payload = {user_id: user.id}
+         secret = Rails.application.secret_key_base
+         token = JWT.encode(payload, secret)
+        render json: { message: "user sucessfully signed up", user: user, token: token }, status: :created  
     end
 
     def show

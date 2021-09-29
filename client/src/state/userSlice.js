@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import { Redirect } from "react-router";
 // Reducer
 // export const fetchUser = createAsyncThunk("user/signup", (signupData) => {
 // console.log(signupData)
@@ -57,7 +58,7 @@ export const userLoginAsync = createAsyncThunk("login/userLoginAsync",
 )
 
 export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync", 
-    async (signupData, history) => {
+    async (signupData) => {
 
         const response = await fetch('/users', {
             method: "POST",
@@ -67,16 +68,17 @@ export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync",
         // WHAT RESPONSE LOOKS LIKE
         // {
         //     "message": "user sucessfully signed up",
-        //     "created_user": {
-        //         "id": 11,
-        //         "first_name": "lilly",
-        //         "last_name": "sing",
-        //         "username": "lillysing",
-        //         "email": "lsing@gmail.com",
-        //         "password_digest": "$2a$12$EohBRP5EMvP3n1wRZKCmzestQMysVMgz9PwPu6tEOuarFW9OsERxi",
-        //         "created_at": "2021-09-29T03:25:41.158Z",
-        //         "updated_at": "2021-09-29T03:25:41.158Z"
-        //     }
+        //     "user": {
+        //         "id": 32,
+        //         "first_name": "Susy",
+        //         "last_name": "Mai",
+        //         "username": "susymai",
+        //         "email": "smai@gmail.com",
+        //         "password_digest": "$2a$12$xUsrP2B7FkS/pFkyPIkg8exL2s89EaVj1glYVzoqGX.Td14LR70mO",
+        //         "created_at": "2021-09-29T20:32:54.795Z",
+        //         "updated_at": "2021-09-29T20:32:54.795Z"
+        //     },
+        //     "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMn0.NElbt0IC7WJaw9S2a7AW-ySJnJxf9h3aLsBqI-D1NKU"
         // }
 
 
@@ -89,7 +91,7 @@ export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync",
 
 const initialState = {
     entities: [],
-    user: [],
+    user: null,
     status: "idle",
     errors: []
 }
@@ -101,8 +103,11 @@ const userSlice = createSlice({
         
         userLogout(state, action) {
             localStorage.removeItem("token")
-            state.user = []
-            // also empty out user array at state.user
+            state.user = null
+            state.status = "idle"
+            state.entities = []
+            state.errors = []
+          
         }
 
     },
@@ -112,16 +117,17 @@ const userSlice = createSlice({
         //     // state.status = "idle",
         //     state.entities = action.payload
         // },
-        [signUpUserAsync.fulfilled](state, action) {state.entities.push("sucessfully signed up"); state.status = "idle"},
+    
+        [signUpUserAsync.fulfilled](state, action) {state.entities.push("sucessfully signed up"); localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user},
         [signUpUserAsync.pending](state) {state.status = "loading"},
         [signUpUserAsync.rejected](state) {state.errors.push("rejected for some reason") },
 
-        [userLoginAsync.fulfilled](state, action) {localStorage.setItem("token", action.payload.token); state.status = "idle"},//!!!!!!!!
+        [userLoginAsync.fulfilled](state, action) {localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user},
         [userLoginAsync.pending](state) {state.status = "loading"},
         [userLoginAsync.rejected](state) {state.errors.push("rejected for some reason") },
 
-        [fetchUserInfo.fulfilled](state, action) { /*push user info into entities*/state.user.push(action.payload.user) },
-        [fetchUserInfo.pending](state) {state.status = "idle"},
+        [fetchUserInfo.fulfilled](state, action) { state.user = action.payload.user; state.status = "idle" },
+        [fetchUserInfo.pending](state) {state.status = "loading"},
         [fetchUserInfo.rejected](state) {state.errors.push("rejected for some reason") },
     }
 })

@@ -4,11 +4,9 @@ import {useForm} from "react-hook-form"
 import {signUpUserAsync} from "./state/userSlice"
 import {useDispatch, useSelector} from "react-redux"
 import { Redirect } from "react-router-dom"
-import { useHistory } from 'react-router'
 
 function Signup() {
 
-    const history = useHistory()
     const user = useSelector(state => state.user.entities)
     console.log("USER: ", user)
     const dispatch = useDispatch()

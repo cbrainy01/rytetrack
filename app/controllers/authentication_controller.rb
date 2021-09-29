@@ -11,7 +11,7 @@ class AuthenticationController < ApplicationController
          secret = Rails.application.secret_key_base
          token = JWT.encode(payload, secret)
 # also render the user along with a custom serializer. Then use useEffect to store the users info in state 
-         render json: { token: token}, status: :created
+         render json: { token: token, user: user}, status: :created
         else
             render json: { errors: ["Invalid username or password"] }, status: :unauthorized
         end
