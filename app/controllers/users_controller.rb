@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+#   rescue_from ActiveRecord::RecordNotFound, with: :bad_creation_message
 
     skip_before_action :authorize, only: :create
 
@@ -9,9 +10,10 @@ class UsersController < ApplicationController
          secret = Rails.application.secret_key_base
          token = JWT.encode(payload, secret)
         render json: { message: "user sucessfully signed up", user: user, token: token }, status: :created  
+    
     end
 
-    def show
+    def show # ME ROUTE
         # find user by id gotten from decoding the token
         # user = User.find(params[:user_id])
         token = request.headers["authorization"].split(" ")[1]
@@ -34,6 +36,10 @@ class UsersController < ApplicationController
     def user_params
         params.permit(:username, :first_name, :last_name, :password, :password_confirmation, :email)
     end
+
+    # def bad_creation_message
+
+    # end
 
 
 end

@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
 
-  rescue_from ActiveRecord::RecordNotFound, with: :record_invalid_response
+  rescue_from ActiveRecord::RecordInvalid, with: :record_invalid_response
   before_action :authorize
 
   def authorize
@@ -19,7 +19,7 @@ class ApplicationController < ActionController::API
           payload = JWT.decode(token, secret).first 
           user = User.find(payload["user_id"])
       rescue
-        render json: { errors: ["Unauthorized, bad token"], status: :unauthorized }
+        render json: { error: "Unauthorized, bad token", status: :unauthorized }
       end
     end
 

@@ -17,13 +17,27 @@ export const fetchUserInfo = createAsyncThunk("me/fetchUserInfo",
             method: "GET",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${userToken}`,}
         })
+        // try {
+        //     const rData = await response.json();
+        //     return rData;
+        // }
+        // catch (error) {
+        //     if(error.code === 404) {
+        //         return "error on test"
+        //     }
+        // }
         if(response.ok) {
             const rData = await response.json();
             return rData;
         }
+        else { const unauthorizedMessage = await response.json(); return unauthorizedMessage}
+        //  else if(response.status === 401) {
+        //      console.log("TEST: ", response)
+        //     return response.error
+        // }
 
     }
-                     // RESPONSE SHOULD LOOK LIKE THIS
+                     // GOOD RESPONSE LOOKS LIKE THIS
     // {
     //     "user": {
     //         "id": 11,
@@ -46,14 +60,17 @@ export const userLoginAsync = createAsyncThunk("login/userLoginAsync",
             headers: {"Content-Type": "application/json",},
             body: JSON.stringify(loginData)
         })
-        // WHAT RESPONSE LOOKS LIKE
+        // WHAT Good RESPONSE LOOKS LIKE
         // {
         //     "token": "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxMX0.5zOZGKbQcwKG-NTPOwQFUGAqqRDoaL79zRzUM4X22ck"
         // }
+        // WHAT BAD RESPONSE LOOKS LIKE
+        // { error: "Invalid username or password" }
         if(response.ok) {
             const rData = await response.json();
             return rData;
         }
+        else { const rData = await response.json() ; return rData }
     }    
 )
 
@@ -65,7 +82,7 @@ export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync",
             headers: {"Content-Type": "application/json",},
             body: JSON.stringify(/**signupData which should be an object */signupData)
         });
-        // WHAT RESPONSE LOOKS LIKE
+        // WHAT GOOD RESPONSE LOOKS LIKE
         // {
         //     "message": "user sucessfully signed up",
         //     "user": {
@@ -86,6 +103,7 @@ export const signUpUserAsync = createAsyncThunk("users/signUpUserAsync",
             const rData = await response.json();
             return rData;
         }
+        else {const errors = await response.json(); return errors}
     }
 )
 
@@ -93,7 +111,10 @@ const initialState = {
     entities: [],
     user: null,
     status: "idle",
-    errors: []
+    errors: [],
+    loginError: null,
+    signupErrors: null,
+    isAuthorized: false,
 }
 
 const userSlice = createSlice({
@@ -107,6 +128,9 @@ const userSlice = createSlice({
             state.status = "idle"
             state.entities = []
             state.errors = []
+            state.loginError = null
+            state.signupErrors = null
+            state.isAuthorized = false
           
         }
 
@@ -118,15 +142,26 @@ const userSlice = createSlice({
         //     state.entities = action.payload
         // },
     
-        [signUpUserAsync.fulfilled](state, action) {state.entities.push("sucessfully signed up"); localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user},
+        [signUpUserAsync.fulfilled](state, action) {
+            if(action.payload.user) {state.entities.push("sucessfully signed up"); localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user}
+            else {state.signupErrors = action.payload.errors; state.status = "idle"}          
+        },
         [signUpUserAsync.pending](state) {state.status = "loading"},
         [signUpUserAsync.rejected](state) {state.errors.push("rejected for some reason") },
 
-        [userLoginAsync.fulfilled](state, action) {localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user},
+        [userLoginAsync.fulfilled](state, action) {
+            if(action.payload.token) {localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user; state.loginError = null; state.isAuthorized = true }
+            else {state.loginError = action.payload.error; state.status = "idle"; }
+        },
         [userLoginAsync.pending](state) {state.status = "loading"},
         [userLoginAsync.rejected](state) {state.errors.push("rejected for some reason") },
 
-        [fetchUserInfo.fulfilled](state, action) { state.user = action.payload.user; state.status = "idle" },
+        [fetchUserInfo.fulfilled](state, action) { 
+            // if(action.payload.error) {state.errors.push(action.payload.error); state.status = "idle" }
+            // else { state.user = action.payload.user; state.status = "idle" } 
+            if(action.payload.user) { state.user = action.payload.user; state.status = "idle"; state.isAuthorized = true}
+             else {state.isAuthorized = false; state.status = "idle"}
+        },
         [fetchUserInfo.pending](state) {state.status = "loading"},
         [fetchUserInfo.rejected](state) {state.errors.push("rejected for some reason") },
     }

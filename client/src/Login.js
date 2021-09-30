@@ -2,11 +2,12 @@ import React from 'react'
 import {useForm} from "react-hook-form"
 import { useDispatch } from 'react-redux';
 import { userLoginAsync } from './state/userSlice';
+import { useSelector } from 'react-redux';
 
 function Login() {
     const dispatch = useDispatch()
     const {register, handleSubmit} = useForm();
-    // console.log("LS: ", localStorage)
+    const loginError = useSelector(state => state.user.loginError)
 
     
     return (
@@ -18,6 +19,7 @@ function Login() {
                 <input type="password" placeholder="password" name="password" {...register("password")}/><br/>
                 <input type="submit" />
             </form>
+            {loginError? <p style={{color: "red"}}>{loginError}</p>: null}
         </div>
     )
 }

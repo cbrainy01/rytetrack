@@ -3,12 +3,14 @@ import React from 'react'
 import {useForm} from "react-hook-form"
 import {signUpUserAsync} from "./state/userSlice"
 import {useDispatch, useSelector} from "react-redux"
+import { v4 as uuid } from "uuid"
 import { Redirect } from "react-router-dom"
 
 function Signup() {
 
-    const user = useSelector(state => state.user.entities)
-    console.log("USER: ", user)
+    // const user = useSelector(state => state.user.entities)
+    const signupErrors = useSelector(state => state.user.signupErrors)
+    // console.log("USER: ", user)
     const dispatch = useDispatch()
     // const user = useSelector(state => state.user.entities)
     // console.log("USER IS: ", user)
@@ -33,6 +35,7 @@ function Signup() {
             <input type="password" placeholder="passwordConfirmation" name="password_confirmation" {...register("password_confirmation")}/><br/>
             <input type="submit" />
         </form>
+        {signupErrors? signupErrors.map( (error) => <p key={uuid()} style={{color: "red"}}>-{error}</p> ) : null }
     </div>
         // <div>
         //     <form onSubmit={handleSubmit(onSubmit)}>
