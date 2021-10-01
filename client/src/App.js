@@ -7,6 +7,7 @@ import Home from "./Home"
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './state/userSlice';
 import Loader from 'react-spinners/RingLoader';
+import Exercises from './Exercises';
 
 
 function App() {
@@ -32,16 +33,16 @@ function App() {
       {status === "loading" ? <Loader/> : 
       <Switch>
         <Route exact path="/signup">
-          {/* check local storage. if theres a token, go to home */}
           {isAuthorized ? <Redirect to="/"/> : <Signup/> }
-          {/* <Signup /> */}
         </Route>
         <Route exact path="/login">
         {isAuthorized ? <Redirect to="/"/> : <Login/> }
-          {/* <Login  /> */}
+        </Route>
+        <Route exact path="/login">
+        {isAuthorized ? <Exercises/> : <Redirect to="/login"/> }
         </Route>
         <Route exact path="/">
-          {isAuthorized ? <Home /> : <Redirect to="/login"/>}
+        {isAuthorized ? <Home /> : <Redirect to="/login"/>}
         </Route>
       </Switch>}
     </>

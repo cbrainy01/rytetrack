@@ -20,6 +20,9 @@ function Navbar() {
             <li>
                 <Link  to="/"> Home</Link>
             </li>
+            <li>
+                <Link  to="/workouts">Workouts</Link>
+            </li>
             </nav>
             <button onClick={() => dispatch( userLogout(history) )}>logout</button>
         </div>
