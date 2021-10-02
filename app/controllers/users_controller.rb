@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-#   rescue_from ActiveRecord::RecordNotFound, with: :bad_creation_message
 
     skip_before_action :authorize, only: :create
 
@@ -36,10 +35,6 @@ class UsersController < ApplicationController
     def user_params
         params.permit(:username, :first_name, :last_name, :password, :password_confirmation, :email)
     end
-
-    # def bad_creation_message
-
-    # end
 
 
 end

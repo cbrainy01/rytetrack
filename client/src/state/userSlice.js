@@ -17,15 +17,7 @@ export const fetchUserInfo = createAsyncThunk("me/fetchUserInfo",
             method: "GET",
             headers: { "Content-Type": "application/json", "Authorization": `Bearer ${userToken}`,}
         })
-        // try {
-        //     const rData = await response.json();
-        //     return rData;
-        // }
-        // catch (error) {
-        //     if(error.code === 404) {
-        //         return "error on test"
-        //     }
-        // }
+       
         if(response.ok) {
             const rData = await response.json();
             return rData;

@@ -38,7 +38,7 @@ function App() {
         <Route exact path="/login">
         {isAuthorized ? <Redirect to="/"/> : <Login/> }
         </Route>
-        <Route exact path="/login">
+        <Route exact path="/workouts">
         {isAuthorized ? <Exercises/> : <Redirect to="/login"/> }
         </Route>
         <Route exact path="/">

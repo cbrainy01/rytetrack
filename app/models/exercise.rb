@@ -1,5 +1,5 @@
 class Exercise < ApplicationRecord
     validates :name, presence: true;
-    has_many_attached :demo_pics, dependent: :destroy
-        validates :demo_pics, content_type: [:png, :jpg, :jpeg]
+    has_one_attached :demo_pic, dependent: :destroy
+    validates :demo_pic, content_type: [:png, :jpg, :jpeg]
 end

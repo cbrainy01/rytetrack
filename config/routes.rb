@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   resources :users, only: [:create]
   post "/login", to: "authentication#login"
   get "/me", to: "users#show"
+  resources :exercises, only: [:create, :show, :destroy]
+  # delete exercise image: destroy "exercises/:id/delete_image/image_id", to: exercises#delete_image
 
   get "/test", to: "users#test"
 
