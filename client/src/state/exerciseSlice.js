@@ -3,16 +3,22 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 const initialState = {
     exercises: [],
     status: "idle",
-    createErrors: [],
+    createErrors: null,
     rejectionError: [],
 }
 
 export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
-    async (newExerciseInfo, userToken) => {
+    async (newExerciseInfo, token) => {
+        const fData = new FormData()
+        fData.append("demo_pic", newExerciseInfo.demo_pic)
+        fData.append("name", newExerciseInfo.name)
+        fData.append("description", newExerciseInfo.description)
+        fData.append("is_cardio", newExerciseInfo.is_cardio)
         const response = await fetch("/exercises", {
             method: "POST",
-            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${userToken}`,},
-            body: JSON.stringify(newExerciseInfo)
+            headers: { "Authorization": `Bearer ${token}`,},
+            body: fData,
+            // body: JSON.stringify(newExerciseInfo)
         })
 
         if(response.ok) {const rData = await response.json(); return rData}
@@ -29,8 +35,8 @@ const exerciseSlice = createSlice({
     },
     extraReducers: {
         [createExerciseAsync.fulfilled](state, action) {
-            if(action.payload.errors) {state.createErrors = action.payload.errors; state.status = "idle"}
-            else { state.exercises.push(action.payload.exercise); state.status = "idle" }
+            if(action.payload.error) {state.createErrors = action.payload.error; state.status = "idle"}
+            else { state.exercises.push(action.payload); state.status = "idle" }
         },
         [createExerciseAsync.pending](state) {state.status = "loading"},
         [createExerciseAsync.rejected](state) {state.rejectionError.push("didnt work for some reason")}

@@ -1,15 +1,20 @@
 class ExercisesController < ApplicationController
 
-    # skip_before_action :authorize, only: :create
+    skip_before_action :authorize, only: :create
 
     def create
         exercise = Exercise.create!(exercise_params)
-        render json: { exercise: exercise }, status: 201
+        # byebug
+        # render json: { exercise: exercise }, status: 201
+        # render json: Product.all, each_serializer: ProductsSerializer, root: false
+        render json: exercise, serializer: ExerciseSerializer
+        # render json: exercise, include: ['demo_pic'], status: :ok
     end
 
     def index
         exercises = Exercise.all
         render json: { exercises: exercises }, status: 201
+        # render json: receipt_records, include: ['receipt_images'], status: :ok
     end
 
     def delete_image
@@ -26,7 +31,8 @@ class ExercisesController < ApplicationController
     private
 
     def exercise_params
-        params.permit(:name, :description, :demo_pic, :is_cardio)
+        # params.require(:exercise).permit(:name, :description, :is_cardio, :demo_pic)
+        params.permit(:name, :description, :is_cardio, :demo_pic)
     
     end
 

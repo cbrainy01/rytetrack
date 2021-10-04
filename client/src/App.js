@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import Navbar from './Navbar'
-import { Switch, Route, useHistory, Redirect } from "react-router";
+import { Switch, Route, Redirect } from "react-router";
 import Login from "./Login"
 import Signup from "./Signup"
 import Home from "./Home"
@@ -14,7 +14,7 @@ function App() {
 
   const userInfo = useSelector(state => state.user)
   const isAuthorized = useSelector( state => state.user.isAuthorized )
-  const errors = useSelector( state => state.user.errors )
+  // const errors = useSelector( state => state.user.errors )
   const status = useSelector( state => state.user.status )
 
   console.log("CURRENT USER INFO: ", userInfo)

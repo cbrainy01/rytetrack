@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-import { Redirect } from "react-router";
 // Reducer
 // export const fetchUser = createAsyncThunk("user/signup", (signupData) => {
 // console.log(signupData)
