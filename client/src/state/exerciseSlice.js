@@ -31,6 +31,7 @@ export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
         fData.append("name", newExerciseInfo.name)
         fData.append("description", newExerciseInfo.description)
         fData.append("is_cardio", newExerciseInfo.is_cardio)
+        fData.append("timestamp", newExerciseInfo.timestamp)
         fData.append("youtube_url", newExerciseInfo.youtube_url)
         const response = await fetch("/exercises", {
             method: "POST",

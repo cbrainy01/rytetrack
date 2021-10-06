@@ -10,6 +10,7 @@ function CreateExercise() {
         description: "",
         is_cardio: false,
         youtube_url: "",
+        timestamp: "0:00",
     })
     
     const [demo1, setDemo1] = useState(null)
@@ -24,10 +25,13 @@ function CreateExercise() {
         else { demos = [demo1, demo2] }
 
         console.log("Exercise form data: ", formData)
-        console.log("---test: ", {...formData, demos: demos})
-
-        if(validateYouTubeUrl(formData.youtube_url) === false && formData.youtube_url !== "") {alert("invalid youtube url")}
-        else { dispatch( createExerciseAsync({...formData, demos: demos }) )}
+        console.log("---test: ", {...formData, demos: demos, })
+        
+        const tStamp = convertTimestamp(formData.timestamp)
+        console.log(tStamp)
+        if(validateYouTubeUrl(formData.youtube_url) === false && formData.youtube_url !== "") {alert("invalid youtube url!")}
+        else if(tStamp === false || tStamp === NaN) { alert("invalid timestamp!")}
+        else { dispatch( createExerciseAsync({...formData, demos: demos, timestamp: tStamp, }) )}
         
         setFormData({name: "", description: "", is_cardio: false, youtube_url: ""}); setDemo1(null); setDemo2(null)
     }
@@ -43,22 +47,24 @@ function CreateExercise() {
     function handleDemo1Select(e) { setDemo1(e.target.files[0])}
     function handleDemo2Select(e) { setDemo2(e.target.files[0])}
 
+    function convertTimestamp(timestamp) {
+        const parts = timestamp.split(":")
+        const mins = parseInt(parts[0], 10)
+        const secs = parseInt(parts[1], 10)
+        if( secs > 59) {return false}
+        else {
+            return (mins * 60) + secs
+        }
+    }
+
     function validateYouTubeUrl(url) {
-        // const url = ('#youTubeUrl').val();
         if (url !== undefined || url !== '') {
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
             const match = url.match(regExp);
             if (match && match[2].length === 11) {
-                // Do anything for being valid
-                // if need to change the url to embed url then use below line
-                // const finalUrl = ('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
-                // console.log("FInaL URL: ", finalUrl)
                 return url
             }
-            else {
-                // Do anything for not being valid
-                return false
-            }
+            else { return false }
         }
     }
 
@@ -73,8 +79,8 @@ function CreateExercise() {
             <label>Is this a cardiovascular exercise?</label><br/>
             <label>yes</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={true} />
             <label>no</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={false} /><br/>
-            <input name="youtube_url" placeholder="youtube url" onChange={handleChange} value={formData.youtube_url} />
-            <input name="timestamp" placeholder="youtube timestamp (0:00)" onChange={handleChange} value={formData.timestamp}/><br/>
+            <input name="youtube_url" type="text" placeholder="youtube url" onChange={handleChange} value={formData.youtube_url} />
+            <input name="timestamp" type="text" placeholder="youtube timestamp (0:00)" onChange={handleChange} value={formData.timestamp}/><br/>
             <input type="submit"/>
             </form>
         </div>

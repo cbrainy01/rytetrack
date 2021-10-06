@@ -15,7 +15,7 @@ function Exercise({exercise}) {
     function renderVid() {
         if (exercise.youtube_url.length > 0) {
             const vidId = getId(exercise.youtube_url)
-            return <><iframe width="560" height="315" title={`${exercise.name} video demonstration`} src={`//www.youtube.com/embed/${vidId}?start=55`} frameBorder="0" allowFullScreen></iframe><button>remove video</button></>
+            return <><iframe width="560" height="315" title={`${exercise.name} video demonstration`} src={`//www.youtube.com/embed/${vidId}?start=${exercise.timestamp}`} frameBorder="0" allowFullScreen></iframe><button>remove video</button></>
         } 
         else {return null}
     }
