@@ -1,7 +1,7 @@
 class ExerciseSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :id, :name, :description, :demo_pic, :is_cardio, :demos, :youtube_url, :timestamp
+  attributes :id, :name, :description, :demo_pic, :is_cardio, :demos, :youtube_url, :timestamp, :section
 
 
   def demos

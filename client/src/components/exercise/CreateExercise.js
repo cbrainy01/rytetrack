@@ -11,6 +11,7 @@ function CreateExercise() {
         is_cardio: false,
         youtube_url: "",
         timestamp: "0:00",
+        section: "none"
     })
     
     const [demo1, setDemo1] = useState(null)
@@ -73,6 +74,13 @@ function CreateExercise() {
             Create Exercise
             <form onSubmit={handleSubmit}>
             <input type="text" placeholder="exercise name" name="name" onChange={handleChange} value={formData.name}/><br/>
+            <select name="section" value={formData.section} onChange={handleChange}>
+                <option value="none">none</option>
+                <option value="upper">upper body</option>
+                <option value="lower">lower body</option>
+                <option value="full">full body</option>
+                <option value="core">core body</option>
+            </select><br/>
             <textarea name="description" placeholder="description" onChange={handleChange} value={formData.description} /><br/>
             <input onChange={handleDemo1Select} type="file" name="demo_1" /><br/>
             <input onChange={handleDemo2Select} type="file" name="demo_2" /><br/>

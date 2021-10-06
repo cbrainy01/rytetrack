@@ -33,6 +33,7 @@ export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
         fData.append("is_cardio", newExerciseInfo.is_cardio)
         fData.append("timestamp", newExerciseInfo.timestamp)
         fData.append("youtube_url", newExerciseInfo.youtube_url)
+        fData.append("section", newExerciseInfo.section)
         const response = await fetch("/exercises", {
             method: "POST",
             headers: { "Authorization": `Bearer ${localStorage.token}`,},
