@@ -1,7 +1,8 @@
 // import React from 'react'
 import React from 'react'
 import {useForm} from "react-hook-form"
-import {signUpUserAsync} from "./state/userSlice"
+import { signUpUserAsync } from '../state/userSlice'
+// import {signUpUserAsync} from "../state/userSlice"
 import {useDispatch, useSelector} from "react-redux"
 import { v4 as uuid } from "uuid"
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from "react-router-dom"
-import { userLogout } from './state/userSlice'
+import { userLogout } from '../state/userSlice'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
@@ -21,7 +21,7 @@ function Navbar() {
                 <Link  to="/"> Home</Link>
             </li>
             <li>
-                <Link  to="/workouts">Workouts</Link>
+                <Link  to="/exercises">Exercises</Link>
             </li>
             </nav>
             <button onClick={() => dispatch( userLogout(history) )}>logout</button>

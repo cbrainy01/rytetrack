@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react'
-import Navbar from './Navbar'
+import Navbar from './components/Navbar'
 import { Switch, Route, Redirect } from "react-router";
-import Login from "./Login"
-import Signup from "./Signup"
-import Home from "./Home"
+import Login from './components/Login';
+import Signup from "./components/Signup"
+import Home from "./components/Home"
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './state/userSlice';
 import Loader from 'react-spinners/RingLoader';
-import Exercises from './Exercises';
+import Exercises from './components/exercise/Exercises';
 
 
 function App() {
@@ -33,12 +33,12 @@ function App() {
       {status === "loading" ? <Loader/> : 
       <Switch>
         <Route exact path="/signup">
-          {isAuthorized ? <Redirect to="/"/> : <Signup/> }
+          {isAuthorized ? <Redirect to="/exercises"/> : <Signup/> }
         </Route>
         <Route exact path="/login">
-        {isAuthorized ? <Redirect to="/"/> : <Login/> }
+        {isAuthorized ? <Redirect to="/exercises"/> : <Login/> }
         </Route>
-        <Route exact path="/workouts">
+        <Route exact path="/exercises">
         {isAuthorized ? <Exercises/> : <Redirect to="/login"/> }
         </Route>
         <Route exact path="/">

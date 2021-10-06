@@ -1,7 +1,17 @@
 class ExerciseSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
-  attributes :id, :name, :description, :demo_pic, :is_cardio
+  attributes :id, :name, :description, :demo_pic, :is_cardio, :demos
+
+  def demos
+    links = []
+    if object.demos.attached?
+      object.demos.each do |demo|
+      links << rails_blob_path(demo, only_path: true)
+      end
+    end
+    links
+  end
 
   def demo_pic
     if object.demo_pic.attached?
