@@ -41,7 +41,7 @@ class ExercisesController < ApplicationController
 
     def exercise_params
         # params.require(:exercise).permit(:name, :description, :is_cardio, :demo_pic)
-        params.permit( :name, :description, :is_cardio, :demo_pic, demos: [] )
+        params.permit( :name, :description, :youtube_url, :is_cardio, :demo_pic, demos: [] )
     
     end
 

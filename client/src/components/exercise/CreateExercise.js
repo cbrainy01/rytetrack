@@ -9,7 +9,7 @@ function CreateExercise() {
         name: "",
         description: "",
         is_cardio: false,
-        // demo_pic: "",
+        youtube_url: "",
     })
     
     const [demo1, setDemo1] = useState(null)
@@ -25,9 +25,11 @@ function CreateExercise() {
 
         console.log("Exercise form data: ", formData)
         console.log("---test: ", {...formData, demos: demos})
-        dispatch( createExerciseAsync({...formData, demos: demos }) )
-       
-        setFormData({name: "", description: "", is_cardio: false,}); setDemo1(null); setDemo2(null)
+
+        if(validateYouTubeUrl(formData.youtube_url) === false && formData.youtube_url !== "") {alert("invalid youtube url")}
+        else { dispatch( createExerciseAsync({...formData, demos: demos }) )}
+        
+        setFormData({name: "", description: "", is_cardio: false, youtube_url: ""}); setDemo1(null); setDemo2(null)
     }
 
     function handleChange(event) {
@@ -41,6 +43,25 @@ function CreateExercise() {
     function handleDemo1Select(e) { setDemo1(e.target.files[0])}
     function handleDemo2Select(e) { setDemo2(e.target.files[0])}
 
+    function validateYouTubeUrl(url) {
+        // const url = ('#youTubeUrl').val();
+        if (url !== undefined || url !== '') {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=|\?v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            if (match && match[2].length === 11) {
+                // Do anything for being valid
+                // if need to change the url to embed url then use below line
+                // const finalUrl = ('#ytplayerSide').attr('src', 'https://www.youtube.com/embed/' + match[2] + '?autoplay=0');
+                // console.log("FInaL URL: ", finalUrl)
+                return url
+            }
+            else {
+                // Do anything for not being valid
+                return false
+            }
+        }
+    }
+
     return (
         <div>
             Create Exercise
@@ -52,6 +73,8 @@ function CreateExercise() {
             <label>Is this a cardiovascular exercise?</label><br/>
             <label>yes</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={true} />
             <label>no</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={false} /><br/>
+            <input name="youtube_url" placeholder="youtube url" onChange={handleChange} value={formData.youtube_url} />
+            <input name="timestamp" placeholder="youtube timestamp (0:00)" onChange={handleChange} value={formData.timestamp}/><br/>
             <input type="submit"/>
             </form>
         </div>
