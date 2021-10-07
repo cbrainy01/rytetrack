@@ -24,16 +24,22 @@ export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
         const fData = new FormData()
         // fData.append("demo_pic", newExerciseInfo.demo_pic)
         // newExerciseInfo.forEach( (bitOfInfo) => fData.append(`${bitOfInfo}`, bitOfInfo) ) !!refactor
-        if(newExerciseInfo.demos.length > 0 ) { newExerciseInfo.demos.forEach( (demo) => fData.append('demos[]', demo) ) }
-        // else {fData.append("demos[]", [])}
-        // fData.append("demos[]", newExerciseInfo.demos[0])
-        // fData.append("demos[]", newExerciseInfo.demos[1])
-        fData.append("name", newExerciseInfo.name)
-        fData.append("description", newExerciseInfo.description)
-        fData.append("is_cardio", newExerciseInfo.is_cardio)
-        fData.append("timestamp", newExerciseInfo.timestamp)
-        fData.append("youtube_url", newExerciseInfo.youtube_url)
-        fData.append("section", newExerciseInfo.section)
+        
+     
+        // REFACTOR!!!!!!!!!
+        const details = Object.keys(newExerciseInfo)
+        details.forEach( (detail) => {
+            if(detail !== "demos") { fData.append(`${detail}`, newExerciseInfo[detail]) }
+            else {  if(newExerciseInfo[detail].length > 0 ) { newExerciseInfo[detail].forEach( (demo) => fData.append('demos[]', demo) ) }  }
+        } )
+        
+        // if(newExerciseInfo.demos.length > 0 ) { newExerciseInfo.demos.forEach( (demo) => fData.append('demos[]', demo) ) }
+        // fData.append("name", newExerciseInfo.name)
+        // fData.append("description", newExerciseInfo.description)
+        // fData.append("is_cardio", newExerciseInfo.is_cardio)
+        // fData.append("timestamp", newExerciseInfo.timestamp)
+        // fData.append("youtube_url", newExerciseInfo.youtube_url)
+        // fData.append("section", newExerciseInfo.section)
         const response = await fetch("/exercises", {
             method: "POST",
             headers: { "Authorization": `Bearer ${localStorage.token}`,},
