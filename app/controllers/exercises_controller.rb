@@ -14,7 +14,8 @@ class ExercisesController < ApplicationController
         if user && user.authenticate(params[:password])
         exercises = Exercise.where(user_id: user.id )
         # byebug
-        render json: {exercises: exercises}, status: 200
+        render json: exercises, each_serializer: ExerciseSerializer
+        # render json: {exercises: exercises}, status: 200
         end
     end
 

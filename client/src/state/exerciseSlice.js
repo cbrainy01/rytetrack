@@ -80,7 +80,7 @@ const exerciseSlice = createSlice({
 
         [getExercisesAsync.fulfilled](state, action) {
             if(action.payload.error) {state.rejectionError = action.payload.error}
-            else {state.exercises = action.payload.exercises}
+            else {state.exercises = action.payload}
         }
 
     }
