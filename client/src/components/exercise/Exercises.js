@@ -22,7 +22,7 @@ function Exercises() {
     // const exercises = useSelector( state => state.user.exercises )
     // const renderExercises = exercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise} /> )
     console.log("exercises are: ", exercises)
-    const renderExercises = initialExercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise}/>)
+    const renderExercises = exercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise}/>)
     // const renderExercises = exercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise}/>)
 
     const error = useSelector( state => state.exercise.error )

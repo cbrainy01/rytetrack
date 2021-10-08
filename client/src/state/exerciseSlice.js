@@ -61,6 +61,7 @@ const exerciseSlice = createSlice({
     initialState: initialState,
     reducers: {
 
+        exerciseLogout(state, action) { state.exercises = []}
     },
     extraReducers: {
         [createExerciseAsync.fulfilled](state, action) {
@@ -87,5 +88,5 @@ const exerciseSlice = createSlice({
 
 }) 
 
-// export const {  } = exerciseSlice.actions 
+export const { exerciseLogout } = exerciseSlice.actions 
 export default exerciseSlice.reducer
