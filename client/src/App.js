@@ -6,6 +6,7 @@ import Signup from "./components/Signup"
 import Home from "./components/Home"
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './state/userSlice';
+import { persistExercisesAsync } from './state/exerciseSlice';
 import Loader from 'react-spinners/RingLoader';
 import Exercises from './components/exercise/Exercises';
 
@@ -22,7 +23,7 @@ function App() {
 
   useEffect( () => {
     dispatch( fetchUserInfo(localStorage.token) )
-    // dispatch(  )
+    dispatch( persistExercisesAsync(localStorage.token) )
   }, [dispatch])
 
   return (

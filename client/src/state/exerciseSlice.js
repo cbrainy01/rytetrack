@@ -56,6 +56,21 @@ export const getExercisesAsync = createAsyncThunk("exercises/my_exercises",
     }
 )
 
+export const persistExercisesAsync = createAsyncThunk("exercises/persist_exercises",
+    async (userToken) => {
+        const response = await fetch("/persist_exercises", {
+            method: "GET",
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${userToken}`,}
+        })
+        if(response.ok) {
+            const rData = await response.json();
+            return rData;
+        }
+        else { const unauthorizedMessage = await response.json(); return unauthorizedMessage}
+    }
+
+)
+
 const exerciseSlice = createSlice({
     name: 'exercise',
     initialState: initialState,
@@ -81,6 +96,9 @@ const exerciseSlice = createSlice({
         [getExercisesAsync.fulfilled](state, action) {
             if(action.payload.error) {state.rejectionError = action.payload.error}
             else {state.exercises = action.payload}
+        },
+        [persistExercisesAsync.fulfilled](state, action) {
+            if(action.payload.length > 0) {state.exercises = action.payload}
         }
 
     }
