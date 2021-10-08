@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { userLoginAsync } from '../state/userSlice';
 // import { userLoginAsync } from './state/userSlice';
 import { useSelector } from 'react-redux';
+import { getExercisesAsync } from '../state/exerciseSlice';
 
 function Login() {
     const dispatch = useDispatch()
@@ -15,7 +16,7 @@ function Login() {
         <div>
             <h1>Login page</h1>
             Enter credentials
-            <form onSubmit={handleSubmit( (data, e) => {e.preventDefault(); console.log("LOGIn Data: ", data); dispatch( userLoginAsync(data) )  } )}>
+            <form onSubmit={handleSubmit( (data, e) => {e.preventDefault(); console.log("LOGIn Data: ", data); dispatch( userLoginAsync(data) ); dispatch( getExercisesAsync(data) )  } )}>
                 <input type="text" placeholder="userName" name="username" {...register("username")}/><br/>
                 <input type="password" placeholder="password" name="password" {...register("password")}/><br/>
                 <input type="submit" />

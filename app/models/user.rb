@@ -1,5 +1,6 @@
 class User < ApplicationRecord
     has_secure_password
+    has_many :exercises
     validates :username, presence: true
 
     # validates :password, presence: true,       # spaces not allow 

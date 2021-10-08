@@ -1,15 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
-// Reducer
-// export const fetchUser = createAsyncThunk("user/signup", (signupData) => {
-// console.log(signupData)
-//    return fetch("/users", {
-//         method: "POST",
-//         headers: {"Content-Type": "application/json",},
-//         body: JSON.stringify(/**signupData which should be an object */signupData)
-//       })
-//       .then( r => r.json() )
-//       .then( rData => { console.log("RDATA IS: ", rData); return rData} )
-// })
+
 export const fetchUserInfo = createAsyncThunk("me/fetchUserInfo",
     async (userToken) => {
         const response = await fetch("/me", {
@@ -125,6 +115,8 @@ const userSlice = createSlice({
           
         }
 
+
+
     },
     extraReducers: {
         // [fetchUser.pending](state) {state.status = "loading"},
@@ -134,14 +126,20 @@ const userSlice = createSlice({
         // },
     
         [signUpUserAsync.fulfilled](state, action) {
-            if(action.payload.user) {state.entities.push("sucessfully signed up"); localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user}
+            if(action.payload.token) {localStorage.setItem("token", action.payload.token); state.status = "idle"; delete action.payload["token"]; state.user = action.payload; state.signupErrors = null; state.isAuthorized = true }
+            // if(action.payload.token) {state.entities.push("sucessfully signed up"); localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user}
+            // if(action.payload.user) {state.entities.push("sucessfully signed up"); localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user}
             else {state.signupErrors = action.payload.errors; state.status = "idle"}          
         },
         [signUpUserAsync.pending](state) {state.status = "loading"},
         [signUpUserAsync.rejected](state) {state.errors.push("rejected for some reason") },
 
         [userLoginAsync.fulfilled](state, action) {
-            if(action.payload.token) {localStorage.setItem("token", action.payload.token); state.status = "idle"; state.user = action.payload.user; state.loginError = null; state.isAuthorized = true }
+            // its gonna be: action.payload.meta.token with conditional being if action.payload.meta.token
+            // if(action.payload.meta.token) { localStorage.setItem("token", action.payload.meta.token); state.status = "idle"; state.user = action.payload.user; state.loginError = null; state.isAuthorized = true}
+            // if(action.payload) {state.entities.push(action.payload)}
+
+            if(action.payload.token) {localStorage.setItem("token", action.payload.token); state.status = "idle"; delete action.payload["token"]; state.user = action.payload; state.loginError = null; state.isAuthorized = true }
             else {state.loginError = action.payload.error; state.status = "idle"; }
         },
         [userLoginAsync.pending](state) {state.status = "loading"},

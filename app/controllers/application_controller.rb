@@ -14,10 +14,11 @@ class ApplicationController < ActionController::API
     else
       token = authorization_header.split(" ")[1]
       secret = Rails.application.secret_key_base
-      
+      # byebug
       begin
           payload = JWT.decode(token, secret).first 
           user = User.find(payload["user_id"])
+          # byebug
       rescue
         render json: { error: "Unauthorized, bad token", status: :unauthorized }
       end

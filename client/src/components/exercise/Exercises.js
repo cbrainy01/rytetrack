@@ -14,12 +14,16 @@ function Exercises() {
     }
 
     const user = useSelector(state => state.user.user)
+    const initialExercises = useSelector(state => state.user.user.exercises)
+    console.log("initial exercises are: ", initialExercises)
     const exercises = useSelector(state => state.exercise.exercises)
+    
     // eventually, wed like to get exercises from state.user.exercises
     // const exercises = useSelector( state => state.user.exercises )
     // const renderExercises = exercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise} /> )
     console.log("exercises are: ", exercises)
-    const renderExercises = exercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise}/>)
+    const renderExercises = initialExercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise}/>)
+    // const renderExercises = exercises.map( (exercise) => <Exercise key={uuid()} exercise={exercise}/>)
 
     const error = useSelector( state => state.exercise.error )
     return (

@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 
+
 const initialState = {
     exercises: [],
     status: "idle",
     createErrors: null,
     rejectionError: [],
 }
-
+// state.exercises
 export const deletePicAsync = createAsyncThunk("exercises/deletePic",
     async (exerciseId) => {
         const response = await fetch(`/purge/${exerciseId}`, {
@@ -22,10 +23,7 @@ export const deletePicAsync = createAsyncThunk("exercises/deletePic",
 export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
     async (newExerciseInfo) => {
         const fData = new FormData()
-        // fData.append("demo_pic", newExerciseInfo.demo_pic)
-        // newExerciseInfo.forEach( (bitOfInfo) => fData.append(`${bitOfInfo}`, bitOfInfo) ) !!refactor
         
-     
         // REFACTOR!!!!!!!!!
         const details = Object.keys(newExerciseInfo)
         details.forEach( (detail) => {
@@ -33,13 +31,6 @@ export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
             else {  if(newExerciseInfo[detail].length > 0 ) { newExerciseInfo[detail].forEach( (demo) => fData.append('demos[]', demo) ) }  }
         } )
         
-        // if(newExerciseInfo.demos.length > 0 ) { newExerciseInfo.demos.forEach( (demo) => fData.append('demos[]', demo) ) }
-        // fData.append("name", newExerciseInfo.name)
-        // fData.append("description", newExerciseInfo.description)
-        // fData.append("is_cardio", newExerciseInfo.is_cardio)
-        // fData.append("timestamp", newExerciseInfo.timestamp)
-        // fData.append("youtube_url", newExerciseInfo.youtube_url)
-        // fData.append("section", newExerciseInfo.section)
         const response = await fetch("/exercises", {
             method: "POST",
             headers: { "Authorization": `Bearer ${localStorage.token}`,},
@@ -52,6 +43,19 @@ export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
 
 )
 
+export const getExercisesAsync = createAsyncThunk("exercises/my_exercises",
+    async (loginData) => {
+        const response = await fetch("/my_exercises", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(loginData)
+        }) 
+
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+)
+
 const exerciseSlice = createSlice({
     name: 'exercise',
     initialState: initialState,
@@ -60,7 +64,7 @@ const exerciseSlice = createSlice({
     },
     extraReducers: {
         [createExerciseAsync.fulfilled](state, action) {
-            if(action.payload.error) {state.createErrors = action.payload.error; state.status = "idle"}
+            if(action.payload.errors) {state.createErrors = action.payload.errors; state.status = "idle"}
             else { state.exercises.push(action.payload); state.status = "idle" }
         },
         [createExerciseAsync.pending](state) {state.status = "loading"},
@@ -72,6 +76,11 @@ const exerciseSlice = createSlice({
         },
         [deletePicAsync.pending](state) {state.status = "loading"; state.exercises = []},
         [deletePicAsync.rejected](state) {state.rejectionError.push("didnt work for some reason")},
+
+        [getExercisesAsync.fulfilled](state, action) {
+            if(action.payload.error) {state.rejectionError = action.payload.error}
+            else {state.exercises = action.payload.exercises}
+        }
 
     }
 

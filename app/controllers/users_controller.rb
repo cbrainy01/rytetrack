@@ -8,7 +8,8 @@ class UsersController < ApplicationController
         payload = {user_id: user.id}
          secret = Rails.application.secret_key_base
          token = JWT.encode(payload, secret)
-        render json: { message: "user sucessfully signed up", user: user, token: token }, status: :created  
+        render json: user, serializer: LoginSerializer  
+        # render json: { message: "user sucessfully signed up", user: user, token: token }, status: :created  
     
     end
 
@@ -22,7 +23,10 @@ class UsersController < ApplicationController
         user = User.find(payload["user_id"])
         
         # byebug to make sure right params are being used to get user
-        render json: { user: user}, status: 200
+        # serialized_user = ActiveModel::UserSerializer.new(user)
+        render json: user, serializer: UserSerializer
+        # render json: { token: token, user: serialized_user }
+        # render json: { user: user}, status: 200
     end
 
     # create show route to test before action

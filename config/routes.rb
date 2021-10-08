@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :exercises
   # delete exercise image: destroy "exercises/:id/delete_image/image_id", to: exercises#delete_image
   delete "/purge/:id", to: "exercises#purge"
+  post "/my_exercises", to: "exercises#my_exercises"
 
   get "/test", to: "users#test"
 

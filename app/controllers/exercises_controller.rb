@@ -1,17 +1,21 @@
 class ExercisesController < ApplicationController
 
-    skip_before_action :authorize, only: :create
+    skip_before_action :authorize, :only => [:create, :my_exercises]
+    # skip_before_action :authorize, only: :create
 
     def create
-       
         exercise = Exercise.create!(exercise_params)
-        # byebug
-        # exercise.demos.attach(params["demos"])
-        # byebug
-        # render json: { exercise: exercise }, status: 201
-        # render json: Product.all, each_serializer: ProductsSerializer, root: false
         render json: exercise, serializer: ExerciseSerializer
-        # render json: exercise, include: ['demo_pic'], status: :ok
+    end
+
+    def my_exercises
+        # what does params look like cus we have to get the userid sent from frontend
+        user = User.find_by(username: params[:username])
+        if user && user.authenticate(params[:password])
+        exercises = Exercise.where(user_id: user.id )
+        # byebug
+        render json: {exercises: exercises}, status: 200
+        end
     end
 
     def purge
@@ -25,6 +29,7 @@ class ExercisesController < ApplicationController
         render json: { exercises: exercises }, status: 201
         # render json: receipt_records, include: ['receipt_images'], status: :ok
     end
+
 
     def delete_image
         demo_pic = ActiveStorage::Attachment.find(params[:image_id])
@@ -41,7 +46,7 @@ class ExercisesController < ApplicationController
 
     def exercise_params
         # params.require(:exercise).permit(:name, :description, :is_cardio, :demo_pic)
-        params.permit( :name, :description, :youtube_url, :section, :timestamp, :is_cardio, :demo_pic, demos: [] )
+        params.permit( :name, :description, :youtube_url, :section, :user_id, :timestamp, :is_cardio, :demo_pic, demos: [] )
     
     end
 

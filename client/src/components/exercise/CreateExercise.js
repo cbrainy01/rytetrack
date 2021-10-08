@@ -1,9 +1,13 @@
 import React, {useState} from 'react'
 import { useDispatch } from 'react-redux'
 import { createExerciseAsync } from '../../state/exerciseSlice'
+import {v4 as uuid} from "uuid"
+import { useSelector } from 'react-redux'
 
 function CreateExercise() {
     
+    const createErrors = useSelector( state => state.exercise.createErrors )
+    const userId = useSelector( state => state.user.user.id )
     const dispatch = useDispatch()
     const [formData, setFormData] = useState({
         name: "",
@@ -11,7 +15,8 @@ function CreateExercise() {
         is_cardio: false,
         youtube_url: "",
         timestamp: "0:00",
-        section: "none"
+        section: "none",
+        user_id: userId,
     })
     
     const [demo1, setDemo1] = useState(null)
@@ -31,10 +36,10 @@ function CreateExercise() {
         const tStamp = convertTimestamp(formData.timestamp)
         console.log(tStamp)
         if(validateYouTubeUrl(formData.youtube_url) === false && formData.youtube_url !== "") {alert("invalid youtube url!")}
-        else if(tStamp === false || tStamp === NaN) { alert("invalid timestamp!")}
+        else if(tStamp === false ) { alert("invalid timestamp!")}
         else { dispatch( createExerciseAsync({...formData, demos: demos, timestamp: tStamp, }) )}
         
-        setFormData({name: "", description: "", is_cardio: false, youtube_url: ""}); setDemo1(null); setDemo2(null)
+        setFormData({name: "", description: "", is_cardio: false, youtube_url: "", section: "none", timestamp: "0:00"}); setDemo1(null); setDemo2(null)
     }
 
     function handleChange(event) {
@@ -52,7 +57,7 @@ function CreateExercise() {
         const parts = timestamp.split(":")
         const mins = parseInt(parts[0], 10)
         const secs = parseInt(parts[1], 10)
-        if( secs > 59) {return false}
+        if( secs > 59 || isNaN(mins) === true || isNaN(secs) === true) {return false}
         else {
             return (mins * 60) + secs
         }
@@ -91,6 +96,7 @@ function CreateExercise() {
             <input name="timestamp" type="text" placeholder="youtube timestamp (0:00)" onChange={handleChange} value={formData.timestamp}/><br/>
             <input type="submit"/>
             </form>
+            {createErrors ? createErrors.map( (error) => <p key={uuid()} style={{color: "red"}} >-{error}</p> ) : null}
         </div>
     )
 }
