@@ -22,6 +22,7 @@ function App() {
 
   useEffect( () => {
     dispatch( fetchUserInfo(localStorage.token) )
+    // dispatch(  )
   }, [dispatch])
 
   return (

@@ -84,7 +84,7 @@ function CreateExercise() {
                 <option value="upper">upper body</option>
                 <option value="lower">lower body</option>
                 <option value="full">full body</option>
-                <option value="core">core body</option>
+                <option value="core">core</option>
             </select><br/>
             <textarea name="description" placeholder="description" onChange={handleChange} value={formData.description} /><br/>
             <input onChange={handleDemo1Select} type="file" name="demo_1" /><br/>

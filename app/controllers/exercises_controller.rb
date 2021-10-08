@@ -19,6 +19,17 @@ class ExercisesController < ApplicationController
         end
     end
 
+    def persist
+        token = request.headers["authorization"].split(" ")[1]
+        secret = Rails.application.secret_key_base 
+
+        payload = JWT.decode(token, secret).first 
+        user = User.find(payload["user_id"])
+        exercises = Exercise.where(user_id: user.id )
+        render json: exercises, each_serializer: ExerciseSerializer
+        
+    end
+
     def purge
         exercise = Exercise.find(params[:id])
         exercise.demo_pic.purge

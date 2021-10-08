@@ -148,7 +148,7 @@ const userSlice = createSlice({
         [fetchUserInfo.fulfilled](state, action) { 
             // if(action.payload.error) {state.errors.push(action.payload.error); state.status = "idle" }
             // else { state.user = action.payload.user; state.status = "idle" } 
-            if(action.payload.user) { state.user = action.payload.user; state.status = "idle"; state.isAuthorized = true}
+            if(action.payload.username) { state.user = action.payload; state.status = "idle"; state.isAuthorized = true}
              else {state.isAuthorized = false; state.status = "idle"}
         },
         [fetchUserInfo.pending](state) {state.status = "loading"},
