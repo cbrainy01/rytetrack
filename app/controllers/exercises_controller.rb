@@ -9,7 +9,6 @@ class ExercisesController < ApplicationController
     end
 
     def my_exercises
-        # what does params look like cus we have to get the userid sent from frontend
         user = User.find_by(username: params[:username])
         if user && user.authenticate(params[:password])
         exercises = Exercise.where(user_id: user.id )
@@ -17,6 +16,12 @@ class ExercisesController < ApplicationController
         render json: exercises, each_serializer: ExerciseSerializer
         # render json: {exercises: exercises}, status: 200
         end
+    end
+
+    def destroy
+        exercise = Exercise.find(params[:id])
+        exercise.destroy
+        render json: { message: "sucessfully deleted", deletedId: exercise.id}
     end
 
     def persist_exercises

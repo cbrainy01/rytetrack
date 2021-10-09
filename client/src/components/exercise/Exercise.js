@@ -3,7 +3,7 @@ import {v4 as uuid} from "uuid"
 import DemoPic from './DemoPic'
 
 
-function Exercise({exercise}) {
+function Exercise({onExerciseDelete, exercise}) {
     
     function getId(url) {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -20,6 +20,10 @@ function Exercise({exercise}) {
         else {return null}
     }
 
+    function handleDeleteClick() {
+        onExerciseDelete(exercise.id)
+    }
+
     return (
         <div>
 
@@ -30,7 +34,7 @@ function Exercise({exercise}) {
             <br/>
             {renderVid()}
             <p>Description: {exercise.description}</p>
-            <button>delete exercise</button><br/>
+            <button onClick={handleDeleteClick} >delete exercise</button><br/>
             <button>edit exercise</button>
 
         </div>

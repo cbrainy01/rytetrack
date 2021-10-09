@@ -20,11 +20,21 @@ export const deletePicAsync = createAsyncThunk("exercises/deletePic",
     }
 )
 
+export const deleteExerciseAsync = createAsyncThunk("exercises/deleteExercise",
+    async (exerciseId) => {
+        const response = await fetch(`/exercises/${exerciseId}`, {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,}            
+        })
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+)
+
 export const createExerciseAsync = createAsyncThunk("exercises/createExercise",
     async (newExerciseInfo) => {
         const fData = new FormData()
         
-        // REFACTOR!!!!!!!!!
         const details = Object.keys(newExerciseInfo)
         details.forEach( (detail) => {
             if(detail !== "demos") { fData.append(`${detail}`, newExerciseInfo[detail]) }
@@ -99,7 +109,16 @@ const exerciseSlice = createSlice({
         },
         [persistExercisesAsync.fulfilled](state, action) {
             if(action.payload.length > 0) {state.exercises = action.payload}
-        }
+        },
+        [deleteExerciseAsync.fulfilled](state, action) {
+            if(action.payload.message) {
+                state.exercises = state.exercises.filter( (exercise) => exercise.id !== action.payload.deletedId);
+                state.status = "idle" 
+            }
+            else {state.rejectionError.push(action.payload)}
+        },
+        [deleteExerciseAsync.pending](state) { state.status = "loading"},
+        [deleteExerciseAsync.rejected](state) { state.rejectionError.push("didnt delete sucessfully")}
 
     }
 
