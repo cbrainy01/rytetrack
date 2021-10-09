@@ -3,7 +3,7 @@ import {v4 as uuid} from "uuid"
 import DemoPic from './DemoPic'
 
 
-function Exercise({onExerciseDelete, exercise}) {
+function Exercise({onExerciseDelete, onRemoveVideo, exercise}) {
     
     function getId(url) {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
@@ -15,13 +15,17 @@ function Exercise({onExerciseDelete, exercise}) {
     function renderVid() {
         if (exercise.youtube_url.length > 0) {
             const vidId = getId(exercise.youtube_url)
-            return <><iframe width="560" height="315" title={`${exercise.name} video demonstration`} src={`//www.youtube.com/embed/${vidId}?start=${exercise.timestamp}`} frameBorder="0" allowFullScreen></iframe><button>remove video</button></>
+            return <><iframe width="560" height="315" title={`${exercise.name} video demonstration`} src={`//www.youtube.com/embed/${vidId}?start=${exercise.timestamp}`} frameBorder="0" allowFullScreen></iframe>
+            <button onClick={handleRemoveVideo}>remove video</button></>
         } 
         else {return null}
     }
 
     function handleDeleteClick() {
         onExerciseDelete(exercise.id)
+    }
+    function handleRemoveVideo() {
+        onRemoveVideo(exercise.id)
     }
 
     return (

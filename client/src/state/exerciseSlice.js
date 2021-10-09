@@ -20,6 +20,17 @@ export const deletePicAsync = createAsyncThunk("exercises/deletePic",
     }
 )
 
+export const removeVideoAsync = createAsyncThunk("exercises/removeVideo",
+    async (exerciseId) => {
+        const response = await fetch(`/remove_vid/${exerciseId}`, {
+            method: "PATCH",
+            headers: { 'Content-Type': 'application/json', "Authorization": `Bearer ${localStorage.token}` },
+        })
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+)
+
 export const deleteExerciseAsync = createAsyncThunk("exercises/deleteExercise",
     async (exerciseId) => {
         const response = await fetch(`/exercises/${exerciseId}`, {
@@ -118,7 +129,18 @@ const exerciseSlice = createSlice({
             else {state.rejectionError.push(action.payload)}
         },
         [deleteExerciseAsync.pending](state) { state.status = "loading"},
-        [deleteExerciseAsync.rejected](state) { state.rejectionError.push("didnt delete sucessfully")}
+        [deleteExerciseAsync.rejected](state) { state.rejectionError.push("didnt delete sucessfully")},
+        [removeVideoAsync.fulfilled](state, action) {
+            if(action.payload.message) {
+                const exercise = state.exercises.find( (exercise) => exercise.id === action.payload.updatedId )
+                exercise.youtube_url = ""
+            };
+            state.status = "idle"
+        },
+        [removeVideoAsync.pending](state) { state.status = "loading"},
+        [removeVideoAsync.rejected](state) { state.rejectionError.push("didnt delete vid sucessfully")},
+
+
 
     }
 

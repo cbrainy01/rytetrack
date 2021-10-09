@@ -24,6 +24,13 @@ class ExercisesController < ApplicationController
         render json: { message: "sucessfully deleted", deletedId: exercise.id}
     end
 
+    def remove_vid
+        exercise = Exercise.find(params[:id])
+        
+        exercise.update!(:youtube_url => "")
+        render json: { message: "video sucessfully removed", updatedId: exercise.id }
+    end
+
     def persist_exercises
         token = request.headers["authorization"].split(" ")[1]
         secret = Rails.application.secret_key_base         

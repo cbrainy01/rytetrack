@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { deletePicAsync } from '../../state/exerciseSlice'
 import Exercise from './Exercise'
 import { deleteExerciseAsync } from '../../state/exerciseSlice'
+import { removeVideoAsync } from '../../state/exerciseSlice'
 
 function Exercises() {
 
@@ -45,13 +46,16 @@ function Exercises() {
         // dispatch an action which deletes exercise in backend and updates state accordingly
         dispatch( deleteExerciseAsync(exerciseId) )
     }
+    function handleRemoveVideo(exerciseId) {
+        dispatch( removeVideoAsync(exerciseId) )
+    }
 
 console.log("initial exercises are: ", exercises)
 console.log("exercises are: ", pagination())
     const pageNumbers = []
     for( let i = 1; i <= Math.ceil( filteredExercises.length / exercisesPerPage); i++ ) {pageNumbers.push(i);}
 
-    const renderExercises = pagination().map((exercise) => <Exercise key={uuid()} onExerciseDelete={handleExerciseDelete} exercise={exercise}/>)
+    const renderExercises = pagination().map((exercise) => <Exercise key={uuid()} onRemoveVideo={handleRemoveVideo} onExerciseDelete={handleExerciseDelete} exercise={exercise}/>)
 
     function changePage(number) {
         setCurrentPage(number)
