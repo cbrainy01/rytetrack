@@ -79,7 +79,6 @@ console.log("exercises are: ", pagination())
             </nav>
             {error? <p>{error}</p> : null}
             
-            {/* Display Exercises */}
 
         </div>
     )

@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   delete "/purge/:id", to: "exercises#purge"
   post "/my_exercises", to: "exercises#my_exercises"
 
+  resources :sessions
+
   get "/test", to: "users#test"
 
 end
