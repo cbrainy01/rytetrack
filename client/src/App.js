@@ -9,7 +9,7 @@ import { fetchUserInfo } from './state/userSlice';
 import { persistExercisesAsync } from './state/exerciseSlice';
 import Loader from 'react-spinners/RingLoader';
 import Exercises from './components/exercise/Exercises';
-
+import Sessions from './components/session/Sessions';
 
 function App() {
 
@@ -42,6 +42,9 @@ function App() {
         </Route>
         <Route exact path="/exercises">
         {isAuthorized ? <Exercises/> : <Redirect to="/login"/> }
+        </Route>
+        <Route exact path="/sessions">
+        {isAuthorized ? <Sessions/> : <Redirect to="/login"/> }
         </Route>
         <Route exact path="/">
         {isAuthorized ? <Home /> : <Redirect to="/login"/>}

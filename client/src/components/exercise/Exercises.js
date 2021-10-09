@@ -9,7 +9,7 @@ import Exercise from './Exercise'
 function Exercises() {
 
     const [currentPage, setCurrentPage] = useState(1)
-    const [exercisesPerPage, setExercisesPerPage] = useState(10)
+    const [exercisesPerPage] = useState(10)
 
     const [filterValue, setFilterValue] = useState("all")
     const [searchValue, setSearchValue] = useState("")
@@ -70,11 +70,11 @@ console.log("exercises are: ", pagination())
             <ul>{renderExercises}</ul>
             <nav>
                 <ul>
-                    {pageNumbers.map( (number) => <>
+                    {pageNumbers.map( (number) => <div key={uuid()}>
                     <li key={number} >
                         <button  onClick={ () => changePage(number) }  >{number}</button>
                     </li>
-                    </> )}
+                    </div> )}
                 </ul>
             </nav>
             {error? <p>{error}</p> : null}

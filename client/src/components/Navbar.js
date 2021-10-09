@@ -24,6 +24,9 @@ function Navbar() {
             <li>
                 <Link  to="/exercises">Exercises</Link>
             </li>
+            <li>
+                <Link  to="/sessions">Sessions</Link>
+            </li>
             </nav>
             <button onClick={ () => {dispatch( userLogout(history) ); dispatch( exerciseLogout() )} }>logout</button>
         </div>
