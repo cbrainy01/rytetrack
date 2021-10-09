@@ -32,14 +32,13 @@ function CreateExercise() {
 
         console.log("Exercise form data: ", formData)
         console.log("---test: ", {...formData, demos: demos, })
-        
+        console.log("userId: ", userId)
         const tStamp = convertTimestamp(formData.timestamp)
-        console.log(tStamp)
         if(validateYouTubeUrl(formData.youtube_url) === false && formData.youtube_url !== "") {alert("invalid youtube url!")}
         else if(tStamp === false ) { alert("invalid timestamp!")}
         else { dispatch( createExerciseAsync({...formData, demos: demos, timestamp: tStamp, }) )}
         
-        setFormData({name: "", description: "", is_cardio: false, youtube_url: "", section: "none", timestamp: "0:00"}); setDemo1(null); setDemo2(null)
+        setFormData({name: "", description: "", is_cardio: false, youtube_url: "", section: "none", timestamp: "0:00", user_id: userId}); setDemo1(null); setDemo2(null)
     }
 
     function handleChange(event) {
