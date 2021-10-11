@@ -88,7 +88,7 @@ function CreateExercise() {
             <textarea name="description" placeholder="description" onChange={handleChange} value={formData.description} /><br/>
             <input onChange={handleDemo1Select} type="file" name="demo_1" /><br/>
             <input onChange={handleDemo2Select} type="file" name="demo_2" /><br/>
-            <label>Is this a cardiovascular exercise?</label><br/>
+            <label>Is this a cardiovascular exercise?(default is no)</label><br/>
             <label>yes</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={true} />
             <label>no</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={false} /><br/>
             <input name="youtube_url" type="text" placeholder="youtube url" onChange={handleChange} value={formData.youtube_url} />

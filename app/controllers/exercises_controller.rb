@@ -8,6 +8,14 @@ class ExercisesController < ApplicationController
         render json: exercise, serializer: ExerciseSerializer
     end
 
+    def update
+        exercise = Exercise.find(params[:id])
+        # byebug
+        exercise.update!(exercise_params)
+        # byebug
+        render json: exercise, serializer: ExerciseSerializer
+    end
+
     def my_exercises
         user = User.find_by(username: params[:username])
         if user && user.authenticate(params[:password])
@@ -41,6 +49,27 @@ class ExercisesController < ApplicationController
         
     end
 
+    def remove_pic
+        # exercise = Exercise.find(params[:exercise_id])
+        # url = params[:url]
+        byebug
+        # iterate through all the demos for that exercise and get the url. If the url matches the url from params, 
+        # call purge_later on that demo
+        if exercise.demos.attached? exercise.demos.each do |demo|
+            url2 = rails_blob_path(demo, only_path: true)
+            puts url2    
+            # if url == url2 
+                #     exercise.demo.purge
+                #     # demo.purge
+                # end
+            
+            end
+        end
+        # run exercise.demos.attached? if it returns false it means that pic has been purged
+        byebug
+
+    end
+
     def purge
         exercise = Exercise.find(params[:id])
         exercise.demo_pic.purge
@@ -69,7 +98,7 @@ class ExercisesController < ApplicationController
 
     def exercise_params
         # params.require(:exercise).permit(:name, :description, :is_cardio, :demo_pic)
-        params.permit( :name, :description, :youtube_url, :section, :user_id, :timestamp, :is_cardio, :demo_pic, demos: [] )
+        params.permit( :name, :description, :youtube_url, :section, :user_id, :timestamp, :url, :exercise_id, :is_cardio, :demo_pic, demos: []   )
     
     end
 

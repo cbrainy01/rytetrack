@@ -2,8 +2,8 @@ class ExerciseSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
 
   belongs_to :user
-  attributes :id, :name, :description, :demo_pic, :is_cardio, :demos, :youtube_url, :timestamp, :section, :user_id
-  # add user_id attribute 
+  attributes :id, :name, :description, :is_cardio, :demos, :youtube_url, :timestamp, :section, :user_id
+  # add user_id attribute  :demo_pic,
 
 
   def user_id
@@ -20,22 +20,22 @@ class ExerciseSerializer < ActiveModel::Serializer
     links
   end
 
-  def demo_pic
-    if object.demo_pic.attached?
-      url = rails_blob_path(object.demo_pic , only_path: true)
-      # byebug
-      url
-      # object.demo_pic.blob.attributes
-      # .slice('filename', 'byte_size', 'id').merge(url: demo_pic_url(demo_pic)) 
+  # def demo_pic
+  #   if object.demo_pic.attached?
+  #     url = rails_blob_path(object.demo_pic , only_path: true)
+  #     # byebug
+  #     url
+  #     # object.demo_pic.blob.attributes
+  #     # .slice('filename', 'byte_size', 'id').merge(url: demo_pic_url(demo_pic)) 
       
-      # set above to a variable and byebug 
-    else "https://www.mcdonalds.com/content/dam/ca/nfl/web/nutrition/products/tile/en/mcdonalds-fries-small.jpg"
+  #     # set above to a variable and byebug 
+  #   else "https://www.mcdonalds.com/content/dam/ca/nfl/web/nutrition/products/tile/en/mcdonalds-fries-small.jpg"
       
-      # byebug 
-    # return demo_pic.blob.attributes
-    end
+  #     # byebug 
+  #   # return demo_pic.blob.attributes
+  #   end
     
-  end
+  # end
 
   def demo_pic_url(image)
     rails_blob_path(image, only_path: true)
