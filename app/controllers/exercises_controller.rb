@@ -50,24 +50,26 @@ class ExercisesController < ApplicationController
     end
 
     def remove_pic
-        # exercise = Exercise.find(params[:exercise_id])
-        # url = params[:url]
-        # byebug
-        # iterate through all the demos for that exercise and get the url. If the url matches the url from params, 
+        exercise = Exercise.find(params[:id])
+        pic_id = params["pic_id"].to_i
+        # iterate through all the demos for that exercise and get the id If the id matches the id from params, 
         # call purge_later on that demo
-        if exercise.demos.attached? exercise.demos.each do |demo|
-            url2 = rails_blob_path(demo, only_path: true)
-            puts url2    
-            # if url == url2 
-                #     exercise.demo.purge
-                #     # demo.purge
-                # end
+        if exercise.demos.attached? 
+            
+            exercise.demos.each do |demo|
+                # for each demo, we wanna get its attributes, more specifically, the id.
+                # if the id matches params.pic_id, go ahead and purge that demo
+                atts = demo.blob.attributes.slice('filename', 'byte_size', 'id')           
+                id = atts["id"]
+                if id == pic_id
+                    demo.purge
+                end
             
             end
+                render json: { pic_id: pic_id, exercise_id: params[:id].to_i }, status: 200
+            else
+                render json: {message: "no pics were found"}, status: 200
         end
-        # run exercise.demos.attached? if it returns false it means that pic has been purged
-        # byebug
-
     end
 
     def purge

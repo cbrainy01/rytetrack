@@ -24,7 +24,7 @@ export const deletePicAsync = createAsyncThunk("exercises/deletePic",
 export const removePicAsync = createAsyncThunk("exercises/removePic",
     async (picInfo) => {
         // const stringy = JSON.stringify(picInfo.url)
-        const response = await fetch(`/remove_pic/${picInfo.id}`, {
+        const response = await fetch(`/remove_pic/${picInfo.exercise_id}/${picInfo.picId}`, {
             method: "PATCH",
             headers: { "Authorization": `Bearer ${localStorage.token}`, },
             body: JSON.stringify({url: picInfo.url})
@@ -166,7 +166,18 @@ const exerciseSlice = createSlice({
         [removeVideoAsync.pending](state) { state.status = "loading"},
         [removeVideoAsync.rejected](state) { state.rejectionError.push("didnt delete vid sucessfully")},
 
-        [removePicAsync.fulfilled](state, action) {state.rejectionError.push("fulfilled")},
+        [removePicAsync.fulfilled](state, action) {
+            if(action.payload.pic_id) {
+                state.status = "idle";
+                state.exercises = state.exercises.map( (exercise) => {
+                    if(exercise.id === action.payload.exercise_id){
+                        exercise.demos = exercise.demos.filter( (demo) => demo.id !== action.payload.pic_id )
+                        return exercise
+                    } 
+                    else {return exercise}
+                })
+            }
+        },
         [removePicAsync.pending](state) { state.status = "loading"},
         [removePicAsync.rejected](state) { state.rejectionError.push("didnt delete pic sucessfully")},
 

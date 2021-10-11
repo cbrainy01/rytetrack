@@ -5,7 +5,7 @@ import { removePicAsync } from '../../state/exerciseSlice'
 function DemoPic({picInfo, onRemovePic, exercise_id}) {
     const dispatch = useDispatch()
     function handleClick() {
-        // dispatch( removePicAsync({url: url, id: exercise_id}) )
+        dispatch( removePicAsync({picId: picInfo.id, exercise_id: exercise_id}) )
     }
     
     
