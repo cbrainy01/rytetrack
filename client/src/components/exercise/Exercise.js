@@ -118,7 +118,8 @@ function Exercise({onRemovePic, onExerciseDelete, onRemoveVideo, exercise}) {
         :
         <>
          <h3>{exercise.name}</h3>
-            {exercise.demos.length > 0 ? exercise.demos.map( (url) => <DemoPic key={uuid()} url={url} exercise_id={exercise.id} onRemovePic={onRemovePic} /> ) : null}  
+            {exercise.demos ? exercise.demos.map( (demo) => <DemoPic key={uuid()} picInfo={demo} exercise_id={exercise.id} onRemovePic={onRemovePic} /> ) : null}  
+            {/* {exercise.demos.length > 0 ? exercise.demos.map( (url) => <DemoPic key={uuid()} url={url} exercise_id={exercise.id} onRemovePic={onRemovePic} /> ) : null}   */}
             <br/>
             {renderVid()}
             <p>Description: {exercise.description}</p>

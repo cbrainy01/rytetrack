@@ -52,7 +52,7 @@ class ExercisesController < ApplicationController
     def remove_pic
         # exercise = Exercise.find(params[:exercise_id])
         # url = params[:url]
-        byebug
+        # byebug
         # iterate through all the demos for that exercise and get the url. If the url matches the url from params, 
         # call purge_later on that demo
         if exercise.demos.attached? exercise.demos.each do |demo|
@@ -66,7 +66,7 @@ class ExercisesController < ApplicationController
             end
         end
         # run exercise.demos.attached? if it returns false it means that pic has been purged
-        byebug
+        # byebug
 
     end
 

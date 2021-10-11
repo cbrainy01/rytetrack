@@ -1,10 +1,11 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
+import { removePicAsync } from '../../state/exerciseSlice'
 
-function DemoPic({url, onRemovePic, exercise_id}) {
-    
-    const stringified = `${url}`
+function DemoPic({picInfo, onRemovePic, exercise_id}) {
+    const dispatch = useDispatch()
     function handleClick() {
-        onRemovePic(stringified, exercise_id)
+        // dispatch( removePicAsync({url: url, id: exercise_id}) )
     }
     
     
@@ -13,7 +14,7 @@ function DemoPic({url, onRemovePic, exercise_id}) {
         <div>
     {/* add click event listener on pic whichll lead to a patch of exercise which removes the pic */}
     
-            <img alt="" src={url} />
+            <img alt="" src={picInfo.url} />
             <button onClick={handleClick}>delete pic</button>
         </div>
     )

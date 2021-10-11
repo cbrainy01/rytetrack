@@ -22,12 +22,12 @@ export const deletePicAsync = createAsyncThunk("exercises/deletePic",
 )
 
 export const removePicAsync = createAsyncThunk("exercises/removePic",
-    async (exerciseId, url) => {
-        const stringy = `${url}`
-        const response = await fetch(`/remove_pic/${stringy}`, {
+    async (picInfo) => {
+        // const stringy = JSON.stringify(picInfo.url)
+        const response = await fetch(`/remove_pic/${picInfo.id}`, {
             method: "PATCH",
             headers: { "Authorization": `Bearer ${localStorage.token}`, },
-            // body: JSON.stringify({url: url})
+            body: JSON.stringify({url: picInfo.url})
         })
         if(response.ok) {const rData = await response.json(); return rData}
         else { const badResponse = await response.json(); return badResponse }
