@@ -8,6 +8,12 @@ class SessionsController < ApplicationController
         render json: session, serializer: SessionSerializer
     end
 
+    def destroy
+        session = Session.find(params[:id])
+        session.destroy
+        render json: { message: "sucessfully deleted", deletedId: session.id }
+    end
+
     def my_sessions
         user = User.find_by(username: params[:username])
         if user && user.authenticate(params[:password])

@@ -8,6 +8,7 @@ function Sessions() {
     
     const [currentPage, setCurrentPage] = useState(1)
     const [sessionsPerPage] = useState(7)
+    const [selectedSession, setSelectedSession] = useState(null)
 
     const sessions = useSelector(state => state.session.sessions)
     
@@ -20,7 +21,8 @@ function Sessions() {
     const pageNumbers = []
     for( let i = 1; i <= Math.ceil( sessions.length / sessionsPerPage); i++ ) {pageNumbers.push(i);}
     
-    const renderSessions = pagination().map( (session) => <Session key={uuid()} session={session} /> )
+    const renderSessions = pagination().map( (session) => <li  key={uuid()} onClick={() => setSelectedSession(session)} >{session.date}</li> )
+    // const renderSessions = pagination().map( (session) => <Session key={uuid()} session={session} onClick={() => {setSelectedSession(session); console.log("adjustment") }} /> )
 
     function changePage(number) {
         setCurrentPage(number)
@@ -30,6 +32,13 @@ function Sessions() {
         <div>
             SESSIONS PAGE
             <CreateSession/>
+
+            {selectedSession ? 
+            <> 
+                <Session session={selectedSession} onBack={() => setSelectedSession(null)} />
+            </> 
+            :
+            <>
             <h3>Sessions</h3>
             {renderSessions}
            
@@ -43,6 +52,9 @@ function Sessions() {
                     </div> )}
                 </ul>
             </nav>
+            </>
+            }
+            
         </div>
     )
 }

@@ -55,6 +55,19 @@ export const getSessionsAsync = createAsyncThunk("sessions/getSessions",
 
 )
 
+export const deleteSessionAsync = createAsyncThunk("sessions/deleteSession",
+    async(deleteId) => {
+        const response = await fetch(`/sessions/${deleteId}`, {
+            method: "DELETE",
+            headers: { "Authorization": `Bearer ${localStorage.token}`,},
+        })
+
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+
+)
+
 const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,
@@ -88,7 +101,17 @@ const sessionSlice = createSlice({
 
         [persistSessionsAsync.fulfilled](state, action) {
             if(action.payload.length > 0) { state.sessions = action.payload }
-        }
+        }, 
+
+        [deleteSessionAsync.fulfilled](state, action) {
+            if(action.payload.message) {
+                // filter sessions and leave out one which id matches deletedId
+                state.sessions = state.sessions.filter( (session) => session.id !== action.payload.deletedId )
+            }
+            else { state.rejectionErrors.push("did not delete sucessfully") }
+        },
+        [deleteSessionAsync.pending](state) { state.status = "loading" },
+        [deleteSessionAsync.rejected](state) { state.rejectionErrors.push("didnt go through") }
 
     }
 
