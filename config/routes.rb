@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   patch "/remove_pic/:id/:pic_id", to: "exercises#remove_pic"
   
   post "/my_exercises", to: "exercises#my_exercises"
+  post "/my_sessions", to: "sessions#my_sessions"
   patch "/remove_vid/:id", to: "exercises#remove_vid"
 
   resources :sessions

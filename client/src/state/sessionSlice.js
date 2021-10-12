@@ -41,6 +41,20 @@ export const createSessionAsync = createAsyncThunk("sessions/createSession",
 
 )
 
+export const getSessionsAsync = createAsyncThunk("sessions/getSessions", 
+    async (loginData) => {
+        const response = await fetch("/my_sessions", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(loginData)
+        }) 
+
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+
+)
+
 const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,
@@ -59,6 +73,15 @@ const sessionSlice = createSlice({
         },
         [createSessionAsync.pending](state) {state.status = "loading"},
         [createSessionAsync.rejected](state) {state.rejectionErrors.push("didnt go through")},
+
+        [getSessionsAsync.fulfilled](state, action) {
+            if(action.payload.error) {state.rejectionErrors = action.payload.error}
+            else { state.sessions = action.payload }
+        },
+
+        [persistSessionsAsync.fulfilled](state, action) {
+            if(action.payload.length > 0) { state.sessions = action.payload }
+        }
 
     }
 

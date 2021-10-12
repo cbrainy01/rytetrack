@@ -1,7 +1,12 @@
 import React from 'react'
 import CreateSession from './CreateSession'
+import { useSelector } from 'react-redux'
 
 function Sessions() {
+    
+    // SET UP ROUTES WHICH SET SESSIONS UPON LOGGING IN
+    // const sessions = useSelector(state => state.session.sessions)
+    
     return (
         <div>
             SESSIONS PAGE

@@ -1,11 +1,19 @@
 class SessionsController < ApplicationController
 
-    # skip_before_action :authorize, only: :create
+    skip_before_action :authorize, :only => [:my_sessions]
 
 
     def create
         session = Session.create!(session_params)
         render json: session, serializer: SessionSerializer
+    end
+
+    def my_sessions
+        user = User.find_by(username: params[:username])
+        if user && user.authenticate(params[:password])
+            sessions = Session.where(user_id: user.id)
+            render json: sessions, each_serializer: SessionSerializer
+        end
     end
 
     def persist_sessions
@@ -14,7 +22,7 @@ class SessionsController < ApplicationController
         payload = JWT.decode(token, secret).first
         user = User.find(payload["user_id"])
         sessions = Session.where(user_id: user.id)
-        # render json: sessions, each_serializer: SessionSerializer
+        render json: sessions, each_serializer: SessionSerializer
     end
 
     private

@@ -7,9 +7,11 @@ import Home from "./components/Home"
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserInfo } from './state/userSlice';
 import { persistExercisesAsync } from './state/exerciseSlice';
+import { persistSessionsAsync } from './state/sessionSlice';
 import Loader from 'react-spinners/RingLoader';
 import Exercises from './components/exercise/Exercises';
 import Sessions from './components/session/Sessions';
+
 
 function App() {
 
@@ -23,9 +25,10 @@ function App() {
 
   useEffect( () => {
     dispatch( fetchUserInfo(localStorage.token) )
-    dispatch( persistExercisesAsync(localStorage.token)
+    dispatch( persistExercisesAsync(localStorage.token) )
+    dispatch( persistSessionsAsync() )
     // dispatch action for persisting exercises
-    )
+    
   }, [dispatch])
 
   return (
