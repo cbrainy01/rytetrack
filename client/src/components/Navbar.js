@@ -10,6 +10,7 @@ function Navbar() {
     const history = useHistory()
     const dispatch = useDispatch()
     
+    // CONDITIONALLY RENDER THE SIGNUP AND LOGIN LINKS BASED ON WHETHER USER IS SIGNED IN OR NOT
     return (
         <div>
              <nav>
