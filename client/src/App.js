@@ -23,7 +23,9 @@ function App() {
 
   useEffect( () => {
     dispatch( fetchUserInfo(localStorage.token) )
-    dispatch( persistExercisesAsync(localStorage.token) )
+    dispatch( persistExercisesAsync(localStorage.token)
+    // dispatch action for persisting exercises
+    )
   }, [dispatch])
 
   return (
@@ -35,10 +37,10 @@ function App() {
       {status === "loading" ? <Loader/> : 
       <Switch>
         <Route exact path="/signup">
-          {isAuthorized ? <Redirect to="/exercises"/> : <Signup/> }
+          {isAuthorized ? <Redirect to="/sessions"/> : <Signup/> }
         </Route>
         <Route exact path="/login">
-        {isAuthorized ? <Redirect to="/exercises"/> : <Login/> }
+        {isAuthorized ? <Redirect to="/sessions"/> : <Login/> }
         </Route>
         <Route exact path="/exercises">
         {isAuthorized ? <Exercises/> : <Redirect to="/login"/> }

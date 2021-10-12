@@ -50,19 +50,13 @@ function Exercises() {
     function handleRemoveVideo(exerciseId) {
         dispatch( removeVideoAsync(exerciseId) )
     }
-    function handleRemovePic(picUrl, exerciseId) {
-        // dispatch and action which uses url to find record of attached image and purge that image, then update state
-        // so that the exercise no longer has that pic as part of its demos
-        dispatch( removePicAsync(exerciseId, picUrl) )
-        console.log("url n id: ", typeof picUrl, picUrl )
-    }
 
 console.log("initial exercises are: ", exercises)
 console.log("exercises are: ", pagination())
     const pageNumbers = []
     for( let i = 1; i <= Math.ceil( filteredExercises.length / exercisesPerPage); i++ ) {pageNumbers.push(i);}
 
-    const renderExercises = pagination().map((exercise) => <Exercise key={uuid()} onRemovePic={handleRemovePic} onRemoveVideo={handleRemoveVideo} onExerciseDelete={handleExerciseDelete} exercise={exercise}/>)
+    const renderExercises = pagination().map((exercise) => <Exercise key={uuid()} onRemoveVideo={handleRemoveVideo} onExerciseDelete={handleExerciseDelete} exercise={exercise}/>)
 
     function changePage(number) {
         setCurrentPage(number)

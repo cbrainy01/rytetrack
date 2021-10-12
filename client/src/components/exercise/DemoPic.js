@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { removePicAsync } from '../../state/exerciseSlice'
 
-function DemoPic({picInfo, onRemovePic, exercise_id}) {
+function DemoPic({picInfo, exercise_id}) {
     const dispatch = useDispatch()
     function handleClick() {
         dispatch( removePicAsync({picId: picInfo.id, exercise_id: exercise_id}) )

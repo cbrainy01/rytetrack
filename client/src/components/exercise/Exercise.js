@@ -6,12 +6,10 @@ import { editExerciseAsync } from '../../state/exerciseSlice'
 import { useSelector } from 'react-redux'
 
 
-function Exercise({onRemovePic, onExerciseDelete, onRemoveVideo, exercise}) {
+function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
     
     const editErrors = useSelector(state => state.exercise.editErrors)
-    const dispatch = useDispatch()
-    const [editMode, setEditMode] = useState(false)
-    const [formDataEdit, setFormDataEdit] = useState({
+    const initialFormData = {
         name: exercise.name,
         description: exercise.description,
         is_cardio: exercise.is_cardio,
@@ -19,7 +17,11 @@ function Exercise({onRemovePic, onExerciseDelete, onRemoveVideo, exercise}) {
         timestamp: "0:00",
         section: exercise.section,
         user_id: exercise.user_id
-    })
+    }
+    const dispatch = useDispatch()
+    const [editMode, setEditMode] = useState(false)
+    const [formDataEdit, setFormDataEdit] = useState(initialFormData)
+    // console.log("formDataEdit: ", formDataEdit)
     function getId(url) {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = url.match(regExp);
@@ -60,7 +62,8 @@ function Exercise({onRemovePic, onExerciseDelete, onRemoveVideo, exercise}) {
         /**dispatch action for patch request */
         dispatch( editExerciseAsync({info: formDataEdit, id: exercise.id}) )
         console.log("---", formDataEdit, "exID: ", exercise.id)
-    }// reset formData
+    }
+    setFormDataEdit(initialFormData)
    }
 
    function validateYouTubeUrl(url) {
@@ -84,7 +87,7 @@ function Exercise({onRemovePic, onExerciseDelete, onRemoveVideo, exercise}) {
     }
     function exitEdit() {
         setEditMode(false)
-        // reset formDataEdit
+        setFormDataEdit(initialFormData)
     }
 
     return (
@@ -118,7 +121,7 @@ function Exercise({onRemovePic, onExerciseDelete, onRemoveVideo, exercise}) {
         :
         <>
          <h3>{exercise.name}</h3>
-            {exercise.demos ? exercise.demos.map( (demo) => <DemoPic key={uuid()} picInfo={demo} exercise_id={exercise.id} onRemovePic={onRemovePic} /> ) : null}  
+            {exercise.demos ? exercise.demos.map( (demo) => <DemoPic key={uuid()} picInfo={demo} exercise_id={exercise.id} /> ) : null}  
             {/* {exercise.demos.length > 0 ? exercise.demos.map( (url) => <DemoPic key={uuid()} url={url} exercise_id={exercise.id} onRemovePic={onRemovePic} /> ) : null}   */}
             <br/>
             {renderVid()}
