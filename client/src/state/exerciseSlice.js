@@ -123,7 +123,12 @@ const exerciseSlice = createSlice({
     initialState: initialState,
     reducers: {
 
-        exerciseLogout(state, action) { state = initialState}
+        exerciseLogout(state, action) {  state.exercises = [];
+            state.status = "idle";
+            state.createErrors = null;
+            state.rejectionError = [];
+            state.editErrors = null;
+        }
     },
     extraReducers: {
         [createExerciseAsync.fulfilled](state, action) {

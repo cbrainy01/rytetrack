@@ -59,7 +59,14 @@ const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,
     reducers: {
-        sessionLogout(state) { state = initialState }
+        sessionLogout(state) { 
+            state.sessions = [];
+            state.status = "idle";
+            state.createErrors = null;
+            state.editErrors = null;
+            state.showErrors = null;
+            state.rejectionErrors = [];
+        }
     },
     extraReducers: {
         [persistSessionsAsync.fulfilled](state, action) {

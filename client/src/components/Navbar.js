@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from "react-router-dom"
 import { userLogout } from '../state/userSlice'
 import { exerciseLogout } from '../state/exerciseSlice'
+import { sessionLogout } from '../state/sessionSlice'
 import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 
@@ -29,7 +30,11 @@ function Navbar() {
             </li>
             </nav>
             {/* add dispatch for sessionLogout */}
-            <button onClick={ () => {dispatch( userLogout(history) ); dispatch( exerciseLogout() )} }>logout</button>
+            <button onClick={ () => { 
+                dispatch( exerciseLogout() );
+                dispatch( sessionLogout() );
+                dispatch( userLogout(history) );
+                } }>logout</button>
         </div>
     )
 }
