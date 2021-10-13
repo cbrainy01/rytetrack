@@ -14,9 +14,10 @@ function Session({session, onBack}) {
         <div>
              <h2>THe DEEtS</h2>
             {session.date}
-            <button onClick={onBack}> go back</button>
-            <button onClick={handleDelete}>delete session</button>
-            <button>edit session</button>
+            <br/><button onClick={onBack}> go back</button><br/>
+            <button onClick={handleDelete}>delete session</button><br/>
+            <button>edit session</button><br/>
+            <button>use this session as a template</button>
         </div>
     )
 }

@@ -10,10 +10,8 @@ function Sessions() {
     const [sessionsPerPage] = useState(7)
     const [selectedSession, setSelectedSession] = useState(null)
     const [filterValue, setFilterValue] = useState("all")
-    const [selectedMonth, setSelectedMonth] = useState("all")
 
     const sessions = useSelector(state => state.session.sessions)
-    console.log("filter val: ", filterValue, typeof filterValue)
     function filteredSessions() {
         if(filterValue === "all") {return sessions}
         else {
@@ -56,6 +54,7 @@ function Sessions() {
             :
             <>
             <h3>Sessions</h3>
+            <button>create session from scratch</button><br/>
             <select onChange={ (e) => setFilterValue(e.target.value) } value={filterValue}>
                 <option value="all">all</option>
                 {renderMonths}

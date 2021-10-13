@@ -10,10 +10,8 @@ Rails.application.routes.draw do
   get "/me", to: "users#show"
   get "/persist_exercises", to: "exercises#persist_exercises"
   get "/persist_sessions", to: "sessions#persist_sessions"
-  resources :exercises
-  # delete exercise image: destroy "exercises/:id/delete_image/image_id", to: exercises#delete_image
+  
   delete "/purge/:id", to: "exercises#purge"
-
   patch "/remove_pic/:id/:pic_id", to: "exercises#remove_pic"
   
   post "/my_exercises", to: "exercises#my_exercises"
@@ -21,6 +19,8 @@ Rails.application.routes.draw do
   patch "/remove_vid/:id", to: "exercises#remove_vid"
 
   resources :sessions
+  resources :workouts
+  resources :exercises
 
   get "/test", to: "users#test"
 

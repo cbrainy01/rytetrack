@@ -68,6 +68,18 @@ export const deleteSessionAsync = createAsyncThunk("sessions/deleteSession",
 
 )
 
+export const updateSessionDate = createAsyncThunk( "sessions/updateDate",
+    async(updateInfo) => {
+        const fData = new FormData()
+        fData.append("date", updateInfo.newDate )
+        const response = await fetch(`/sessions/${updateInfo.id}`, { 
+        method: "PATCH",
+        headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,},
+        body: fData,
+        })
+    }
+)
+
 const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,
@@ -111,7 +123,14 @@ const sessionSlice = createSlice({
             else { state.rejectionErrors.push("did not delete sucessfully") }
         },
         [deleteSessionAsync.pending](state) { state.status = "loading" },
-        [deleteSessionAsync.rejected](state) { state.rejectionErrors.push("didnt go through") }
+        [deleteSessionAsync.rejected](state) { state.rejectionErrors.push("didnt go through") },
+
+        [updateSessionDate.fulfilled](state, action) {
+            if(action.payload.message) {
+                // payload looks like { message: "...sdf", updateId: id, newDate: "2015-03-06" }
+                // change state so that the updated session has new date
+            }
+        }
 
     }
 

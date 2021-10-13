@@ -14,6 +14,13 @@ class SessionsController < ApplicationController
         render json: { message: "sucessfully deleted", deletedId: session.id }
     end
 
+    def update
+        
+        session = Session.find(params[:id])
+        session.update!(session_params)
+        render json: { message: "sucessfully updated", updateId: session.id, newDate: session.date }
+    end
+
     def my_sessions
         user = User.find_by(username: params[:username])
         if user && user.authenticate(params[:password])
