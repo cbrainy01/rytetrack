@@ -93,7 +93,7 @@ export const editExerciseAsync = createAsyncThunk( "exercises/editExercise",
 export const getExercisesAsync = createAsyncThunk("exercises/my_exercises",
     async (loginData) => {
         const response = await fetch("/my_exercises", {
-            method: "POST",
+            method: "GET",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify(loginData)
         }) 

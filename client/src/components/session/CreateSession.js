@@ -37,7 +37,7 @@ function CreateSession() {
         <div>
             <form onSubmit={handleSubmit}>
                 <input onChange={handleChange} type="date" name="date" value={formData.date}></input>
-                <button>create session</button>
+                <button>create session from scratch</button>
             </form>
         </div>
     )

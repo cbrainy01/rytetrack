@@ -7,6 +7,7 @@ const initialState = {
     editErrors: null,
     showErrors: null,
     rejectionErrors: [],
+    selectedSession: null,
 }
 
 export const persistSessionsAsync = createAsyncThunk("sessions/persist_sessions",
@@ -44,7 +45,7 @@ export const createSessionAsync = createAsyncThunk("sessions/createSession",
 export const getSessionsAsync = createAsyncThunk("sessions/getSessions", 
     async (loginData) => {
         const response = await fetch("/my_sessions", {
-            method: "POST",
+            method: "GET",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify(loginData)
         }) 
@@ -77,7 +78,24 @@ export const updateSessionDate = createAsyncThunk( "sessions/updateDate",
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,},
         body: fData,
         })
+
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
     }
+)
+
+export const createFromTemplate = createAsyncThunk( "sessions/createFromTemplate",
+    async(createInfo) => {
+        const response = await fetch("/template_create", {
+            method: "POST",
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,},
+            body: JSON.stringify(createInfo),
+        })
+
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    } 
+
 )
 
 const sessionSlice = createSlice({
@@ -91,7 +109,14 @@ const sessionSlice = createSlice({
             state.editErrors = null;
             state.showErrors = null;
             state.rejectionErrors = [];
+            state.selectedSession = null;
+        }, 
+
+        setSelectedSession(state, session) {
+            if(session.payload === null) {state.selectedSession = null}
+            else { state.selectedSession = session }
         }
+
     },
     extraReducers: {
         [persistSessionsAsync.fulfilled](state, action) {
@@ -100,7 +125,7 @@ const sessionSlice = createSlice({
 
         [createSessionAsync.fulfilled](state, action) {
             if(action.payload.errors) { state.createErrors = action.payload.errors }
-            else { state.sessions.push(action.payload) }
+            else { state.sessions.push(action.payload); state.selectedSession = action.payload }
             state.status = "idle"
         },
         [createSessionAsync.pending](state) {state.status = "loading"},
@@ -130,12 +155,22 @@ const sessionSlice = createSlice({
                 // payload looks like { message: "...sdf", updateId: id, newDate: "2015-03-06" }
                 // change state so that the updated session has new date
             }
-        }
+        },
+
+        [createFromTemplate.fulfilled](state, action) {
+            // set current session to what was returned
+            // change state to include the newly created session
+            state.status = "idle";
+            state.sessions.push(action.payload)
+            state.selectedSession = action
+        },
+        [createFromTemplate.pending](state) {state.status = "loading"},
+        [createFromTemplate.rejected](state, action) {state.rejectionErrors.push(action.payload)},
 
     }
 
 
 })
 
-export const { sessionLogout } = sessionSlice.actions
+export const { sessionLogout, setSelectedSession } = sessionSlice.actions
 export default sessionSlice.reducer 

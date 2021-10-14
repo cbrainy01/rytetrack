@@ -22,6 +22,7 @@ class ExercisesController < ApplicationController
         exercises = Exercise.where(user_id: user.id )
         # byebug
         render json: exercises, each_serializer: ExerciseSerializer
+        else render json: {message: "invalid user"}, status: 401
         # render json: {exercises: exercises}, status: 200
         end
     end

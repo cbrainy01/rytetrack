@@ -1,6 +1,7 @@
 class SessionSerializer < ActiveModel::Serializer
   belongs_to :user 
-  attributes :id, :date, :user_id 
+  has_many :workouts 
+  attributes :id, :date, :user_id, :workouts 
 
   def user_id
     self.object.user.id
