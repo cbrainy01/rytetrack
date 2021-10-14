@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_13_000741) do
+ActiveRecord::Schema.define(version: 2021_10_14_183739) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -77,17 +77,18 @@ ActiveRecord::Schema.define(version: 2021_10_13_000741) do
     t.integer "session_id"
     t.integer "sets"
     t.integer "reps"
-    t.integer "weight"
+    t.decimal "weight"
     t.integer "rest_time"
     t.integer "difficulty"
-    t.integer "avg_speed"
-    t.integer "avg_incline"
-    t.integer "miles"
-    t.string "bar"
+    t.decimal "avg_speed"
+    t.decimal "avg_incline"
+    t.decimal "miles"
+    t.integer "bar"
     t.text "notes"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "user_id"
+    t.boolean "birack"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

@@ -7,6 +7,9 @@ class Exercise < ApplicationRecord
     validates :name, presence: true;
     validates :demo_pic, content_type: [:png, :jpg, :jpeg]
     validates :demos, content_type: [:png, :jpg, :jpeg]
+
+    validates :section, presence: true;
+
     # validates :section, in: {%(none upper lower core)}
 
     # validates :demos, content_type: [:png, :jpg, :jpeg]

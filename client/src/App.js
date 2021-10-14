@@ -11,6 +11,7 @@ import { persistSessionsAsync } from './state/sessionSlice';
 import Loader from 'react-spinners/RingLoader';
 import Exercises from './components/exercise/Exercises';
 import Sessions from './components/session/Sessions';
+import BarChart from "./components/BarChart"
 
 
 function App() {
@@ -50,6 +51,9 @@ function App() {
         </Route>
         <Route exact path="/sessions">
         {isAuthorized ? <Sessions/> : <Redirect to="/login"/> }
+        </Route>
+        <Route exact path="/statistics">
+        {isAuthorized ? <BarChart/> : <Redirect to="/login"/> }
         </Route>
         <Route exact path="/">
         {isAuthorized ? <Home /> : <Redirect to="/login"/>}

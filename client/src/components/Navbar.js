@@ -29,6 +29,9 @@ function Navbar() {
             <li>
                 <Link  to="/sessions">Sessions</Link>
             </li>
+            <li>
+                <Link  to="/statistics">Statistics</Link>
+            </li>
             </nav>
             {/* add dispatch for sessionLogout */}
             <button onClick={ () => { 
