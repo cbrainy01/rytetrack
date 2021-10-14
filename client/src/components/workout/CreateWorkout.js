@@ -69,7 +69,13 @@ function CreateWorkout({session_id}) {
     }
 
     const weightDropdown = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map( (num) => <option key={uuid()} value={num}>{num}</option> )
-    
+    const renderWeightSelect = ['45', '35', '25', '10', '5', '2.5'].map( (num) => <div key={uuid()}>
+        <h2>{num}</h2>
+        <p>{plates[num]}</p>
+        <button name={num} value="-" onClick={handlePlateClick }>-</button>
+        <button name={num} value="+" onClick={handlePlateClick}>+</button><br/>
+
+    </div> )
 
     return (
         <div>
@@ -79,40 +85,8 @@ function CreateWorkout({session_id}) {
                     <option value="" >select exercise</option>
                     {exercisesDropdown}
                 </select>
-                <h2>45lbs</h2>
-                <p>{plates["45"]}</p>
-                <button name="45" value="-" onClick={handlePlateClick }>-</button>
-                <button name="45" value="+" onClick={handlePlateClick}>+</button><br/>
-                
-                <select name="45" onChange={(e) => handleWeightChange()}>
-                    <option value="" >select number of plates</option>
-                    {weightDropdown}
-                </select>
-                <h2>35lbs</h2>
-                <select name="35" onChange={(e) => handleWeightChange()}>
-                    <option value="" >select number of plates</option>
-                    {weightDropdown}
-                </select>
-                <h2>25lbs</h2>
-                <select name="25" onChange={(e) => handleWeightChange()}>
-                    <option value="" >select number of plates</option>
-                    {weightDropdown}
-                </select>
-                <h2>10lbs</h2>
-                <select name="10" onChange={(e) => handleWeightChange()}>
-                    <option value="" >select number of plates</option>
-                    {weightDropdown}
-                </select>
-                <h2>5lbs</h2>
-                <select name="5" onChange={(e) => handleWeightChange()}>
-                    <option value="" >select number of plates</option>
-                    {weightDropdown}
-                </select>
-                <h2>2.5lbs</h2>
-                <select name="2.5" onChange={(e) => handleWeightChange()}>
-                    <option value="" >select number of plates</option>
-                    {weightDropdown}
-                </select>
+               {renderWeightSelect}
+
                 <p>are there plates on both sides of the bar? (default is yes)</p>
                 <label>yes</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": true})} value={true} />
                 <label>no</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": false})} value={false} /><br/>
