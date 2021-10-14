@@ -22,10 +22,11 @@ function Session({session, onBack}) {
         <div>
              <h2>THe DEEtS</h2>
             {session.date}
+            <CreateWorkout session_id={session.id} />
             {session.workouts.length > 0 ? session.workouts.map( (workout) => <Workout key={uuid()} workout={workout} />) : null}
 
             <br/><button onClick={onBack}> go back</button><br/>
-            <CreateWorkout session_id={session.id} />
+            
             <button onClick={handleDelete}>delete session</button><br/>
         </div>
     )

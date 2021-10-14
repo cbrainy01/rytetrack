@@ -8,6 +8,7 @@ const initialState = {
     showErrors: null,
     rejectionErrors: [],
     selectedSession: null,
+    workoutErrors: null,
 }
 
 export const persistSessionsAsync = createAsyncThunk("sessions/persist_sessions",
@@ -144,6 +145,7 @@ const sessionSlice = createSlice({
             if(action.payload.message) {
                 // filter sessions and leave out one which id matches deletedId
                 state.sessions = state.sessions.filter( (session) => session.id !== action.payload.deletedId )
+                state.selectedSession = null
             }
             else { state.rejectionErrors.push("did not delete sucessfully") }
         },
