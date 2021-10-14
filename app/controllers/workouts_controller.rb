@@ -13,8 +13,10 @@ class WorkoutsController < ApplicationController
 
     def destroy
         workout = Workout.find(params[:id])
+        session_id = workout.session_id
+        # byebug
         workout.destroy 
-        render json: { message: "sucessfully deleted", deletedId: workout.id }
+        render json: { message: "sucessfully deleted", deletedId: workout.id, session_id: session_id }
     end
 
     def my_workouts

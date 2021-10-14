@@ -99,6 +99,19 @@ export const createFromTemplate = createAsyncThunk( "sessions/createFromTemplate
 
 )
 
+export const deleteWorkoutAsync = createAsyncThunk( "workouts/deleteWorkout",
+    async(deleteId) => {
+        const response = await fetch( `/workouts/${deleteId}`, {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,},
+        })
+        
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+
+)
+
 const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,
@@ -169,6 +182,17 @@ const sessionSlice = createSlice({
         [createFromTemplate.pending](state) {state.status = "loading"},
         [createFromTemplate.rejected](state, action) {state.rejectionErrors.push(action.payload)},
 
+        [deleteWorkoutAsync.fulfilled](state, action) {
+            state.status = "idle";
+            if(action.payload.message) {
+                const sesh = state.sessions.find( (session) => session.id === action.payload.session_id )
+                sesh.workouts = sesh.workouts.filter( (workout) => workout.id !== action.payload.deletedId  )
+                state.selectedSession.payload = sesh
+            }
+            state.rejectionErrors.push(action.payload)
+        },
+        [deleteWorkoutAsync.pending](state) {state.status = "loading"},
+        [deleteWorkoutAsync.rejected](state, action) {state.rejectionErrors.push(action.payload)},
     }
 
 
@@ -176,3 +200,12 @@ const sessionSlice = createSlice({
 
 export const { sessionLogout, setSelectedSession } = sessionSlice.actions
 export default sessionSlice.reducer 
+
+// state.selectedSession = state.sessions.map( (session) => {
+//                     if(session.id === action.payload.session_id) {
+//                         session.workouts = session.workouts.filter( (workout) => workout.id !== action.payload.deletedId ) 
+//                         return session
+//                     }
+//                     else {return session}
+
+// } )
