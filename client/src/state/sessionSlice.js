@@ -139,7 +139,7 @@ const sessionSlice = createSlice({
 
         [createSessionAsync.fulfilled](state, action) {
             if(action.payload.errors) { state.createErrors = action.payload.errors }
-            else { state.sessions.push(action.payload); state.selectedSession = action.payload }
+            else { state.sessions.push(action.payload); state.selectedSession = action }
             state.status = "idle"
         },
         [createSessionAsync.pending](state) {state.status = "loading"},

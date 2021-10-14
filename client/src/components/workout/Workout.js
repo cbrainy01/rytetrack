@@ -8,7 +8,6 @@ function Workout({workout}) {
 
     function handleWorkoutDelete() {
         dispatch( deleteWorkoutAsync(workout.id) )
-        console.log("$$$$$$$$$$$")
     }
     
     return (
