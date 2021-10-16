@@ -141,7 +141,7 @@ const sessionSlice = createSlice({
         }, 
 
         setSelectedSession(state, session) {
-            if(session.payload === null) {state.selectedSession = null}
+            if(session.payload === null) {state.selectedSession = null; state.workoutErrors = null}
             else { state.selectedSession = session }
         }
 
@@ -206,7 +206,7 @@ const sessionSlice = createSlice({
             state.rejectionErrors.push(action.payload)
         },
         [deleteWorkoutAsync.pending](state) {state.status = "loading"},
-        [deleteWorkoutAsync.rejected](state, action) {state.rejectionErrors.push(action.payload)},
+        [deleteWorkoutAsync.rejected](state, action) {state.rejectionErrors.push("didnt delete")},
 
         [createWorkoutAsync.fulfilled](state, action) {
             state.status = "idle";
@@ -214,15 +214,15 @@ const sessionSlice = createSlice({
             if(action.payload.id) { 
                 /**go to selected session and push action.payload to workouts */
                 // state.selectedSession.workouts.push(action.payload)
-                const x = state.selectedSession
+                const x = state.selectedSession.payload
                 x.workouts.push(action.payload)
-                state.selectedSession = x
+                state.selectedSession.payload = x
                 state.workoutErrors = null
             }
             else { state.workoutErrors = action.payload.errors }
         },
         [createWorkoutAsync.pending](state) {state.status = "loading"},
-        [createWorkoutAsync.rejected](state, action) {state.rejectionErrors("didnt go through")},
+        [createWorkoutAsync.rejected](state, action) { state.rejectionErrors.push("didnt go through") },
 
     }
 

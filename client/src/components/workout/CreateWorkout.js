@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux'
 import {v4 as uuid} from "uuid"
 import { createWorkoutAsync } from "../../state/sessionSlice"
 import { useDispatch } from 'react-redux'
+import Loading from "../../Loading"
 
 function CreateWorkout({session_id}) {
     
     const userId = useSelector( state => state.user.user.id )
     const exercises = useSelector( state => state.exercise.exercises )
+    const status = useSelector(state => state.session.status)
     const [exercise_id, setExercise_Id] = useState(null)
     const workoutErrors = useSelector( state => state.session.workoutErrors )    
     const exercisesDropdown = exercises.map( (exercise) => <option key={uuid()} value={exercise.id} >{exercise.name}</option>  )
-    
-    // const [bar, setBar] = useState(0)
-    // const [biRack, setBiRack] = useState(true)
+
     const initialFormData = {
     user_id: userId,
     session_id: session_id,
@@ -42,7 +42,7 @@ function CreateWorkout({session_id}) {
     console.log("formData: ", formData)
     console.log("plates: ", plates)
     console.log("exercise_id: ", exercise_id)
-    // console.log("iscardio: ", isCardio)
+
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -60,22 +60,38 @@ function CreateWorkout({session_id}) {
             // create if statement checking to see if workout is cardio. IF so, there cant be any values for reps, sets. Also, weight must be zero
             const keys = Object.keys(plates)
             keys.forEach( (plate) => {
-                const plateInt = parseInt(plate, 10)
-                if(formData.birack === true) {
+                if(plate === "2.5" && formData.birack === true) {
+                    const plateInt = parseFloat(plate, 10)
+                    const val = plates[plate] * 2
+                    weightArray.push(plateInt * val);
+                }
+                else if (plate === "2.5" && formData.birack === false) {
+                    const plateInt = parseFloat(plate, 10)
+                    const val = plates[plate]
+                    weightArray.push(plateInt * val);
+                }
+                else if(formData.birack === true) {
+                    const plateInt = parseInt(plate, 10)
                     const val = plates[plate] * 2
                     weightArray.push(plateInt * val);
                 }
                 else if(formData.birack === false) {
+                    const plateInt = parseInt(plate, 10)
                     const val = plates[plate]
                     weightArray.push(plateInt * val);
                 }
             })
             const weight = weightArray.reduce( (a, b) => a + b, 0 )
             console.log("weight is: ", weight)
+            console.log("weight array is: ", weightArray)
             
             // dispatch action here
-            const finalFormData = {...formData, "weight": weight, "rest_time": tStamp }
+            const finalWeight = weight === 0 ? "" : weight
+            const finalFormData = {...formData, "weight": finalWeight, "rest_time": tStamp }
+            // const finalFormData = {...formData, "weight": weight, "rest_time": tStamp }
+            console.log("finalFormData: ", finalFormData)
             dispatch( createWorkoutAsync(finalFormData) )
+            setFormData(initialFormData)
         }
         // dispatch action which creates a workout 
     }
@@ -115,8 +131,12 @@ function CreateWorkout({session_id}) {
 
     </div> )
 
+
     return (
         <div>
+            { status === "loading" ?
+                <Loading/>
+                :
             <form onSubmit={handleSubmit}>
                 <br/>
                 <label>select exercise</label>
@@ -139,7 +159,6 @@ function CreateWorkout({session_id}) {
                 </select><br/>
 
                 <p>pics of what the bars look like</p>
-                <p>onsubmit, take into account all this stuff to determine the weight being sent to backend</p>
                 <input onChange={handleNumChange} name="difficulty" placeholder="degree of difficulty(0-10)" ></input><br/>
                 <input onChange={handleNumChange} name="reps" placeholder="reps" ></input><br/>
                 <input onChange={handleNumChange} name="sets" placeholder="sets" ></input><br/>
@@ -152,6 +171,8 @@ function CreateWorkout({session_id}) {
                 { workoutErrors ?  workoutErrors.map( (error) => <p key={uuid()} style={{color: "red"}}>-{error}</p> ): null}
                 <br/><br/><button>Add workout</button>
             </form>
+            }
+            
         </div>
     )
 }

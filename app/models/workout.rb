@@ -59,10 +59,6 @@ class Workout < ApplicationRecord
         
     end
 
- 
-
-
-
 
 
 end
