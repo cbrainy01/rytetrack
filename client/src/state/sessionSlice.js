@@ -112,6 +112,20 @@ export const deleteWorkoutAsync = createAsyncThunk( "workouts/deleteWorkout",
 
 )
 
+export const createWorkoutAsync = createAsyncThunk( "workouts/createWorkout",
+    async(workoutInfo) => {
+        const response = await fetch( "/workouts", {
+            method: "POST",
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,},
+            body: JSON.stringify(workoutInfo),
+        })
+        
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+
+)
+
 const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,
@@ -180,7 +194,7 @@ const sessionSlice = createSlice({
             state.selectedSession = action
         },
         [createFromTemplate.pending](state) {state.status = "loading"},
-        [createFromTemplate.rejected](state, action) {state.rejectionErrors.push(action.payload)},
+        [createFromTemplate.rejected](state, action) {state.rejectionErrors.push("didnt go through")},
 
         [deleteWorkoutAsync.fulfilled](state, action) {
             state.status = "idle";
@@ -193,6 +207,23 @@ const sessionSlice = createSlice({
         },
         [deleteWorkoutAsync.pending](state) {state.status = "loading"},
         [deleteWorkoutAsync.rejected](state, action) {state.rejectionErrors.push(action.payload)},
+
+        [createWorkoutAsync.fulfilled](state, action) {
+            state.status = "idle";
+            
+            if(action.payload.id) { 
+                /**go to selected session and push action.payload to workouts */
+                // state.selectedSession.workouts.push(action.payload)
+                const x = state.selectedSession
+                x.workouts.push(action.payload)
+                state.selectedSession = x
+                state.workoutErrors = null
+            }
+            else { state.workoutErrors = action.payload.errors }
+        },
+        [createWorkoutAsync.pending](state) {state.status = "loading"},
+        [createWorkoutAsync.rejected](state, action) {state.rejectionErrors("didnt go through")},
+
     }
 
 

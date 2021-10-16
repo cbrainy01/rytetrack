@@ -55,8 +55,8 @@ function Sessions() {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const renderMonths = months.map( (month, index) => <option value={index < 9 ? `0${index + 1}` : index + 1} key={uuid()}>{month}</option> )
     
-    const renderSessions = pagination().map( (session) => <div>
-        <li  key={uuid()} onClick={() => dispatch( setSelectedSession(session) )} >
+    const renderSessions = pagination().map( (session) => <div key={uuid()}>
+        <li onClick={() => dispatch( setSelectedSession(session) )} >
             <p>{session.date}</p>
             {/* preview of workouts */}
         </li>
