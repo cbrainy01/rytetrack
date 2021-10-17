@@ -55,11 +55,8 @@ class WorkoutSerializer < ActiveModel::Serializer
       end
     end
 
-    puts storage_unit
     storage_unit
   end
-  # create custom attribute which uses current weight and returns object of plates.
-  # create custom attribute which converts rest_time to a string.
 
 
 end

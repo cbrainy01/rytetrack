@@ -23,6 +23,7 @@ function Session({session, onBack}) {
              <h2>THe DEEtS</h2>
             {session.date}
             <CreateWorkout session_id={session.id} />
+            <h1>Workouts</h1>
             {session.workouts.length > 0 ? session.workouts.map( (workout) => <Workout key={uuid()} workout={workout} />) : null}
 
             <br/><button onClick={onBack}> go back</button><br/>

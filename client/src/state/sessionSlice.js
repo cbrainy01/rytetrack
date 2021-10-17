@@ -9,6 +9,7 @@ const initialState = {
     rejectionErrors: [],
     selectedSession: null,
     workoutErrors: null,
+    workoutEditErrors: null,
 }
 
 export const persistSessionsAsync = createAsyncThunk("sessions/persist_sessions",
@@ -126,6 +127,19 @@ export const createWorkoutAsync = createAsyncThunk( "workouts/createWorkout",
 
 )
 
+export const editWorkoutAsync = createAsyncThunk( "workouts/editWorkout",
+    async(editInfo) => {
+        const response = await fetch( `/workouts/${editInfo["workout_id"]}`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,},
+            body: JSON.stringify(editInfo["editInfo"]),
+        })
+
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+)
+
 const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,
@@ -138,10 +152,12 @@ const sessionSlice = createSlice({
             state.showErrors = null;
             state.rejectionErrors = [];
             state.selectedSession = null;
+            state.workoutEditErrors = null;
+            state.workoutErrors = null;
         }, 
 
         setSelectedSession(state, session) {
-            if(session.payload === null) {state.selectedSession = null; state.workoutErrors = null}
+            if(session.payload === null) {state.selectedSession = null; state.workoutErrors = null; state.workoutEditErrors = null}
             else { state.selectedSession = session }
         }
 
@@ -223,6 +239,19 @@ const sessionSlice = createSlice({
         },
         [createWorkoutAsync.pending](state) {state.status = "loading"},
         [createWorkoutAsync.rejected](state, action) { state.rejectionErrors.push("didnt go through") },
+
+        [editWorkoutAsync.fulfilled](state, action) {
+            state.status = "idle";
+            if(action.payload.id) {
+                const x = state.selectedSession.payload
+                x.workouts.push(action.payload)
+                state.selectedSession.payload = x
+                state.workoutEditErrors = null
+            }
+            else { state.workoutEditErrors = action.payload.errors }
+        },
+        [editWorkoutAsync.pending](state) {state.status = "loading"},
+        [editWorkoutAsync.rejected](state, action) {state.rejectionErrors.push(action.payload)},
 
     }
 
