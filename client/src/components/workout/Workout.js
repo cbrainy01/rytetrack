@@ -4,11 +4,12 @@ import { deleteWorkoutAsync } from '../../state/sessionSlice'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { editWorkoutAsync } from '../../state/sessionSlice'
+import { setEditMode } from '../../state/sessionSlice'
 
 function Workout({workout}) {
     
     const workoutEditErrors = useSelector(state => state.session.workoutEditErrors)
-
+    const editMode = useSelector(state => state.session.editMode)
     const initialFormData = {
         user_id: workout.user_id,
         session_id: workout.session_id, 
@@ -25,7 +26,7 @@ function Workout({workout}) {
         rest_time: workout.rest_time_string
     }
     const [formData, setFormData] = useState(initialFormData)
-    const [editMode, setEditMode] = useState(false)
+    // const [editMode, setEditMode] = useState(false)
     const dispatch = useDispatch()
     const [plates, setPlates] = useState(workout.plate_arrangement)
     const exercises = useSelector( state => state.exercise.exercises )
@@ -81,7 +82,7 @@ function Workout({workout}) {
             const finalFormData = {...formData, "weight": finalWeight, "rest_time": tStamp }
             // const finalFormData = {...formData, "weight": weight, "rest_time": tStamp }
             console.log("finalFormData: ", finalFormData)
-            setEditMode(false)
+            dispatch(setEditMode(false))
             dispatch( editWorkoutAsync({"editInfo": finalFormData, "workout_id": workout.id}) )
             setFormData(initialFormData)
         }
@@ -128,7 +129,7 @@ function Workout({workout}) {
     // console.log("plate arrangement: ", Object.keys(workout.plate_arrangement) )
     return (
         <div>
-            {editMode ? 
+            {editMode === true ? 
             <>
             <form onSubmit={handleEditSubmit}>
                 <br/>
@@ -167,7 +168,7 @@ function Workout({workout}) {
                 { workoutEditErrors ?  workoutEditErrors.map( (error) => <p key={uuid()} style={{color: "red"}}>-{error}</p> ): null}
                 <button>save changes</button>
             </form>
-            <button onClick={() => {setFormData(initialFormData); setEditMode(false); setPlates(workout.plate_arrangement) }}>exit edit</button>
+            <button onClick={() => {setFormData(initialFormData); dispatch(setEditMode(false)); setPlates(workout.plate_arrangement) }}>exit edit</button>
             
             </>
             : 
@@ -184,7 +185,7 @@ function Workout({workout}) {
             <p>miles: {workout.miles}</p> 
             <p>notes: {workout.notes}</p>
             {displayPlateArrangement} 
-            <button onClick={() => setEditMode(true)}>edit workout</button>
+            <button onClick={() => dispatch(setEditMode(true))}>edit workout</button>
 
             </>
             }

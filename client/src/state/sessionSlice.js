@@ -10,6 +10,7 @@ const initialState = {
     selectedSession: null,
     workoutErrors: null,
     workoutEditErrors: null,
+    editMode: false,
 }
 
 export const persistSessionsAsync = createAsyncThunk("sessions/persist_sessions",
@@ -154,11 +155,18 @@ const sessionSlice = createSlice({
             state.selectedSession = null;
             state.workoutEditErrors = null;
             state.workoutErrors = null;
+            state.editMode = false;
         }, 
 
         setSelectedSession(state, session) {
             if(session.payload === null) {state.selectedSession = null; state.workoutErrors = null; state.workoutEditErrors = null}
             else { state.selectedSession = session }
+        },
+
+        // ALTERNATIVE setEditMode( bool) {
+        setEditMode(state, action) {
+            state.rejectionErrors.push(action.payload)
+            state.editMode = action.payload
         }
 
     },
@@ -230,10 +238,10 @@ const sessionSlice = createSlice({
             if(action.payload.id) { 
                 /**go to selected session and push action.payload to workouts */
                 // state.selectedSession.workouts.push(action.payload)
-                const x = state.selectedSession.payload
+               const x = state.selectedSession.payload
                 x.workouts.push(action.payload)
                 state.selectedSession.payload = x
-                state.workoutErrors = null
+                state.workoutEditErrors = null
             }
             else { state.workoutErrors = action.payload.errors }
         },
@@ -243,12 +251,19 @@ const sessionSlice = createSlice({
         [editWorkoutAsync.fulfilled](state, action) {
             state.status = "idle";
             if(action.payload.id) {
+                
+
                 const x = state.selectedSession.payload
-                x.workouts.push(action.payload)
+                const updatedWorkouts = x.workouts.map( (workout) => {
+                    if(workout.id === action.payload.id) {return action.payload}
+                    else return workout
+                })
+                x.workouts = updatedWorkouts
                 state.selectedSession.payload = x
-                state.workoutEditErrors = null
+                state.workoutErrors = null
+                state.editMode = false
             }
-            else { state.workoutEditErrors = action.payload.errors }
+            else { state.workoutEditErrors = action.payload.errors; state.editMode = true }
         },
         [editWorkoutAsync.pending](state) {state.status = "loading"},
         [editWorkoutAsync.rejected](state, action) {state.rejectionErrors.push(action.payload)},
@@ -258,7 +273,7 @@ const sessionSlice = createSlice({
 
 })
 
-export const { sessionLogout, setSelectedSession } = sessionSlice.actions
+export const { sessionLogout, setSelectedSession, setEditMode } = sessionSlice.actions
 export default sessionSlice.reducer 
 
 // state.selectedSession = state.sessions.map( (session) => {
