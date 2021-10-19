@@ -39,6 +39,7 @@ function Workout({workout}) {
     function handleEditSubmit(e) {
         e.preventDefault();
         const tStamp = convertTimestamp(formData.rest_time)
+
         if(formData.exercise_id === null) { alert("must select an exercise")}
         else if( formData.rest_time !== "" && tStamp === false ) { alert("invalid rest time")}
         else {
@@ -78,11 +79,12 @@ function Workout({workout}) {
             console.log("weight array is: ", weightArray)
             
             // dispatch action here
+            const floats = convertFloats(formData.avg_speed, formData.avg_incline, formData.miles)
             const finalWeight = weight === 0 ? "" : weight
-            const finalFormData = {...formData, "weight": finalWeight, "rest_time": tStamp }
+            const finalFormData = {...formData, "weight": finalWeight, "rest_time": tStamp, "avg_speed": floats.avg_speed, "avg_incline": floats.avg_incline, "miles": floats.miles }
             // const finalFormData = {...formData, "weight": weight, "rest_time": tStamp }
             console.log("finalFormData: ", finalFormData)
-            dispatch(setEditMode(false))
+            // dispatch(setEditMode(false))
             dispatch( editWorkoutAsync({"editInfo": finalFormData, "workout_id": workout.id}) )
             setFormData(initialFormData)
         }
@@ -100,6 +102,17 @@ function Workout({workout}) {
     function handleDecimalChange(e) {
         const num = parseFloat(e.target.value)
         setFormData( {...formData, [e.target.name]: num} )
+    }
+    function convertFloats(speed, incline, miles) {
+        const floats = {}
+        if(isNaN(speed) || speed === null) { floats.avg_speed = null }
+        else if(speed !== null) { const avg_speed = parseFloat(speed); floats.avg_speed = avg_speed } else {floats.avg_speed = null}
+        if(isNaN(incline) || incline === null) { floats.avg_incline = null }
+        else if(incline !== null) {const avg_incline = parseFloat(incline); floats.avg_incline = avg_incline} else {floats.avg_incline = null}
+        if(isNaN(miles) || miles === null) { floats.miles = null }
+        else if(miles !== null) {const milez = parseFloat(miles); floats.miles = milez} else {floats.miles = null}
+        
+        return floats
     }
     function handlePlateClick(e) {
         if(plates[e.target.name] >= 1 && e.target.value === "-") { setPlates( {...plates, [e.target.name]: plates[e.target.name] - 1 }) }
@@ -160,9 +173,9 @@ function Workout({workout}) {
                 <input onChange={handleNumChange} name="reps" placeholder="reps" value={formData.reps}></input><br/>
                 <input onChange={handleNumChange} name="sets" placeholder="sets" value={formData.sets}></input><br/>
                 <input onChange={handleChange}    name="rest_time" placeholder="rest time(0:00)"></input><br/>
-                <input onChange={handleDecimalChange} name="avg_speed" placeholder="average speed" value={formData.avg_speed}></input><br/>
-                <input onChange={handleDecimalChange} name="avg_incline" placeholder="average incline" value={formData.avg_incline}></input><br/>
-                <input onChange={handleDecimalChange} name="miles" placeholder="miles" value={formData.miles}></input><br/>
+                <input onChange={handleChange} name="avg_speed" placeholder="average speed" value={formData.avg_speed}></input><br/>
+                <input onChange={handleChange} name="avg_incline" placeholder="average incline" value={formData.avg_incline}></input><br/>
+                <input onChange={handleChange} name="miles" placeholder="miles" value={formData.miles}></input><br/>
                 <textarea name="notes" placeholder="notes" onChange={handleChange} value={formData.notes} /><br/>
                 
                 { workoutEditErrors ?  workoutEditErrors.map( (error) => <p key={uuid()} style={{color: "red"}}>-{error}</p> ): null}
