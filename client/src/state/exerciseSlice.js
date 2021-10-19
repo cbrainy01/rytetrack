@@ -7,6 +7,7 @@ const initialState = {
     createErrors: null,
     rejectionError: [],
     editErrors: null,
+    editMode: false,
 }
 // state.exercises
 export const deletePicAsync = createAsyncThunk("exercises/deletePic",
@@ -118,6 +119,22 @@ export const persistExercisesAsync = createAsyncThunk("exercises/persist_exercis
 
 )
 
+export const addPicAsync = createAsyncThunk( "exercises/addPic",
+    async (picInfo) => {
+        const fData = new FormData()
+        fData.append("new_demo", picInfo.new_demo)
+        const response = await fetch(`/add_pic/${picInfo.exercise_id}`, {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${localStorage.token}`,},
+            body: fData
+        })
+        if(response.ok) {const rData = await response.json(); return rData}
+        else { const badResponse = await response.json(); return badResponse }
+    }
+
+)
+
+
 const exerciseSlice = createSlice({
     name: 'exercise',
     initialState: initialState,
@@ -128,7 +145,10 @@ const exerciseSlice = createSlice({
             state.createErrors = null;
             state.rejectionError = [];
             state.editErrors = null;
-        }
+            state.editMode = false;
+        },
+
+        setEditMode(state, action) { state.editMode = action.payload}
     },
     extraReducers: {
         [createExerciseAsync.fulfilled](state, action) {
@@ -194,11 +214,26 @@ const exerciseSlice = createSlice({
                     if(exercise.id === action.payload.id) {return action.payload}
                     else {return exercise}
                 } )
+                state.editMode = false
             }
             else {state.editErrors = action.payload.errors}
             // else {state.editErrors = action.payload.errors}
         },
         [editExerciseAsync.pending](state) { state.status = "loading"},
+
+        [addPicAsync.fulfilled](state, action) {
+            state.status = "idle"
+            if(action.payload.id) {
+                state.exercises = state.exercises.map( exercise => {
+                    if(exercise.id === action.payload.id) {return action.payload}
+                    else {return exercise}
+                } )
+                
+            }
+            else {state.editErrors = action.payload}
+        },
+        [addPicAsync.pending](state, action) {state.status = "loading"},
+        [addPicAsync.rejected](state, action) {state.rejectionError.push("didnt go through")},
 
 
     }
@@ -206,5 +241,5 @@ const exerciseSlice = createSlice({
 
 }) 
 
-export const { exerciseLogout } = exerciseSlice.actions 
+export const { exerciseLogout, setEditMode} = exerciseSlice.actions 
 export default exerciseSlice.reducer

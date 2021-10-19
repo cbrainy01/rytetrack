@@ -4,8 +4,10 @@ class ExercisesController < ApplicationController
     # skip_before_action :authorize, only: :create
 
     def create
+        byebug
         exercise = Exercise.create!(exercise_params)
         render json: exercise, serializer: ExerciseSerializer
+
     end
 
     def update
@@ -31,6 +33,16 @@ class ExercisesController < ApplicationController
         exercise = Exercise.find(params[:id])
         exercise.destroy
         render json: { message: "sucessfully deleted", deletedId: exercise.id}
+    end
+
+    def add_pic
+        # check params to see if new_demo is included
+        # byebug
+        exercise = Exercise.find(params[:id])
+        exercise.demos.attach(params[:new_demo])
+        # check to see if new demo has been attached
+        # byebug
+        render json: exercise, serializer: ExerciseSerializer
     end
 
     def remove_vid
@@ -101,7 +113,7 @@ class ExercisesController < ApplicationController
 
     def exercise_params
         # params.require(:exercise).permit(:name, :description, :is_cardio, :demo_pic)
-        params.permit( :name, :description, :youtube_url, :section, :user_id, :timestamp, :url, :exercise_id, :is_cardio, :demo_pic, demos: []   )
+        params.permit( :name, :description, :youtube_url, :section, :user_id, :new_demo, :timestamp, :url, :exercise_id, :is_cardio, :demo_pic, demos: []   )
     
     end
 

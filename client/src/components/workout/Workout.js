@@ -129,7 +129,7 @@ function Workout({workout}) {
     // console.log("plate arrangement: ", Object.keys(workout.plate_arrangement) )
     return (
         <div>
-            {editMode === true ? 
+            {editMode === workout.id ? 
             <>
             <form onSubmit={handleEditSubmit}>
                 <br/>
@@ -185,7 +185,7 @@ function Workout({workout}) {
             <p>miles: {workout.miles}</p> 
             <p>notes: {workout.notes}</p>
             {displayPlateArrangement} 
-            <button onClick={() => dispatch(setEditMode(true))}>edit workout</button>
+            <button onClick={() => dispatch(setEditMode(workout.id))}>edit workout</button>
 
             </>
             }

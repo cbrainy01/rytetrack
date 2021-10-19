@@ -141,6 +141,7 @@ export const editWorkoutAsync = createAsyncThunk( "workouts/editWorkout",
     }
 )
 
+
 const sessionSlice = createSlice({
     name: "session",
     initialState: initialState,

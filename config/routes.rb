@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   get "/my_sessions", to: "sessions#my_sessions"
   get "/my_workouts", to: "workouts#my_workouts"
   patch "/remove_vid/:id", to: "exercises#remove_vid"
+  post "/add_pic/:id", to: "exercises#add_pic"
 
   post "/template_create", to: "sessions#template_create"
 

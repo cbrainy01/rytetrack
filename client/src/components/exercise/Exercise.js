@@ -4,7 +4,8 @@ import DemoPic from './DemoPic'
 import { useDispatch } from 'react-redux'
 import { editExerciseAsync } from '../../state/exerciseSlice'
 import { useSelector } from 'react-redux'
-
+import { setEditMode } from '../../state/exerciseSlice'
+import { addPicAsync } from '../../state/exerciseSlice'
 
 function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
     
@@ -16,12 +17,16 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         youtube_url: exercise.youtube_url,
         timestamp: "0:00",
         section: exercise.section,
-        user_id: exercise.user_id
+        user_id: exercise.user_id,
+        // newDemo: null,
     }
     const dispatch = useDispatch()
-    const [editMode, setEditMode] = useState(false)
+    // const [editMode, setEditMode] = useState(false)
     const [formDataEdit, setFormDataEdit] = useState(initialFormData)
+    const editMode = useSelector(state => state.exercise.editMode)
+    const [demo, setDemo] = useState(null)
     // console.log("formDataEdit: ", formDataEdit)
+    console.log("demos: ", exercise.demos)
     function getId(url) {
         const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
         const match = url.match(regExp);
@@ -54,16 +59,16 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         setFormDataEdit({ ...formDataEdit, [event.target.name]: event.target.value === "true" ? true : false })
    }
    function handleSubmit(e) {
-    e.preventDefault()
-    const tStamp = convertTimestamp(formDataEdit.timestamp)
-    if(validateYouTubeUrl(formDataEdit.youtube_url) === false && formDataEdit.youtube_url !== "") {alert("invalid youtube url!")}
-    else if(tStamp === false) { alert("invalid timestamp!") }
-    else {
-        /**dispatch action for patch request */
-        dispatch( editExerciseAsync({info: formDataEdit, id: exercise.id}) )
-        console.log("---", formDataEdit, "exID: ", exercise.id)
-    }
-    setFormDataEdit(initialFormData)
+        e.preventDefault()
+        const tStamp = convertTimestamp(formDataEdit.timestamp)
+        if(validateYouTubeUrl(formDataEdit.youtube_url) === false && formDataEdit.youtube_url !== "") {alert("invalid youtube url!")}
+        else if(tStamp === false) { alert("invalid timestamp!") }
+        else {
+            /**dispatch action for patch request */
+            dispatch( editExerciseAsync({info: formDataEdit, id: exercise.id}) )
+            console.log("---", formDataEdit, "exID: ", exercise.id)
+        }// reset formData
+            setFormDataEdit(initialFormData)
    }
 
    function validateYouTubeUrl(url) {
@@ -86,15 +91,25 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         }
     }
     function exitEdit() {
-        setEditMode(false)
+        dispatch( setEditMode(false) )
         setFormDataEdit(initialFormData)
+    }
+    function handleDemoSelect(e) {
+        setDemo( e.target.files[0] )
+    }
+    function handleAddPicture() {
+        console.log("in the works")
+        const picInfo = {exercise_id: exercise.id, new_demo: demo}
+
+        if(demo !== null && exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
+        else { dispatch( addPicAsync({exercise_id: exercise.id, new_demo: demo}) ) }
     }
 
     return (
         <div>
 
             
-        {editMode ? 
+        {editMode === exercise.id? 
         <>
         <form onSubmit={handleSubmit}>
         <input type="text" placeholder="exercise name" name="name" onChange={handleChange} value={formDataEdit.name}/><br/>
@@ -115,6 +130,7 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         <input name="timestamp" type="text" placeholder="youtube timestamp (0:00)" onChange={handleChange} value={formDataEdit.timestamp}/><br/>
         <button >save changes</button>
         </form>
+        <input onChange={handleDemoSelect} type="file" name="demo_1" /><button onClick={handleAddPicture}>add picture</button><br/>
         {editErrors ? editErrors.map( (error) => <p key={uuid()} style={{color: "red"}}>{error}</p> ) : null}
         <button onClick={exitEdit}>exit edit</button>
         </>
@@ -127,7 +143,7 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
             {renderVid()}
             <p>Description: {exercise.description}</p>
             <button onClick={handleDeleteClick} >delete exercise</button><br/>
-            <button onClick={() => setEditMode(true)}>edit exercise</button>
+            <button onClick={() => dispatch( setEditMode(exercise.id) )}>edit exercise</button>
         </>
         }
 

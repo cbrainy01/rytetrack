@@ -31,6 +31,7 @@ function Exercises() {
         // make first if statement filter for a search by name
         if(searchValue !== "") { return exercises.filter( (exercise) => { if(exercise.name.toLowerCase().includes(searchValue.toLowerCase())) {return exercise} }) }
         else if(filterValue === "all") {return exercises}
+        else if(filterValue === "cardio") { return exercises.filter( (exercise) => exercise.is_cardio === true )/**return exercises where is_cardio is true */}
         else {return exercises.filter( (exercise) => exercise.section === filterValue )}
     }
     const filteredExercises = filterExercises()
@@ -76,6 +77,7 @@ console.log("exercises are: ", pagination())
                 <option value="lower">lower body</option>
                 <option value="full">full body</option>
                 <option value="core">core</option>
+                <option value="cardio">cardio</option>
             </select>
             <p>Created exercises: </p>
             <ul>{renderExercises}</ul>
