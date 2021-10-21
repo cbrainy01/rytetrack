@@ -99,10 +99,6 @@ function Workout({workout}) {
         setFormData( {...formData, [e.target.name]: num} )}
         else { setFormData({...formData, [e.target.name]: ""}) }
     }
-    function handleDecimalChange(e) {
-        const num = parseFloat(e.target.value)
-        setFormData( {...formData, [e.target.name]: num} )
-    }
     function convertFloats(speed, incline, miles) {
         const floats = {}
         if(isNaN(speed) || speed === null) { floats.avg_speed = null }

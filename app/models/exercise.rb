@@ -4,7 +4,7 @@ class Exercise < ApplicationRecord
     has_many_attached :demos, dependent: :destroy
     belongs_to :user
 
-    validates :name, presence: true;
+    validates :name, presence: true, uniqueness: true, length: {maximum: 40};
     validates :demo_pic, content_type: [:png, :jpg, :jpeg]
     validates :demos, content_type: [:png, :jpg, :jpeg]
 

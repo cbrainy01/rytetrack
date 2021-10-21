@@ -4,6 +4,7 @@ import {v4 as uuid} from "uuid"
 import { createWorkoutAsync } from "../../state/sessionSlice"
 import { useDispatch } from 'react-redux'
 import Loading from "../../Loading"
+import "../../styling/createworkout.css"
 
 function CreateWorkout({session_id}) {
     
@@ -133,7 +134,7 @@ function CreateWorkout({session_id}) {
 
 
     return (
-        <div>
+        <div className="createworkout">
             { status === "loading" ?
                 <Loading/>
                 :
@@ -159,7 +160,8 @@ function CreateWorkout({session_id}) {
                 </select><br/>
 
                 <p>pics of what the bars look like</p>
-                <input onChange={handleNumChange} name="difficulty" placeholder="degree of difficulty(0-10)" ></input><br/>
+                <label className="label">degree of difficulty</label>
+                <input className="input" onChange={handleNumChange} name="difficulty" placeholder="" ></input><br/>
                 <input onChange={handleNumChange} name="reps" placeholder="reps" ></input><br/>
                 <input onChange={handleNumChange} name="sets" placeholder="sets" ></input><br/>
                 <input onChange={handleChange}    name="rest_time" placeholder="rest time(0:00)"></input><br/>

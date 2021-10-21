@@ -1,0 +1,26 @@
+body{ 
+    /* background-image: url("../images/gym_background.jpg") ; */
+    background: #dbdbdb;
+    /* background: #ff0000 url(img/rain.jpg) top center repeat-y;  */
+    background-size: 100%; 
+    /* image-rendering: pixelated; */
+    image-rendering: -webkit-optimize-contrast;
+
+}
+/* body{ 
+    background-image: url("../images/gym_background.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    image-rendering: pixelated;
+
+} */
+
+/* html {
+    background: url("../images/full_gym.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
+    image-rendering: pixelated;
+  } */
+
+  

@@ -94,7 +94,7 @@ export const editExerciseAsync = createAsyncThunk( "exercises/editExercise",
 export const getExercisesAsync = createAsyncThunk("exercises/my_exercises",
     async (loginData) => {
         const response = await fetch("/my_exercises", {
-            method: "GET",
+            method: "POST",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify(loginData)
         }) 
@@ -140,7 +140,8 @@ const exerciseSlice = createSlice({
     initialState: initialState,
     reducers: {
 
-        exerciseLogout(state, action) {  state.exercises = [];
+        exerciseLogout(state, action) {  
+            state.exercises = [];
             state.status = "idle";
             state.createErrors = null;
             state.rejectionError = [];

@@ -48,7 +48,7 @@ export const createSessionAsync = createAsyncThunk("sessions/createSession",
 export const getSessionsAsync = createAsyncThunk("sessions/getSessions", 
     async (loginData) => {
         const response = await fetch("/my_sessions", {
-            method: "GET",
+            method: "POST",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify(loginData)
         }) 
@@ -58,6 +58,7 @@ export const getSessionsAsync = createAsyncThunk("sessions/getSessions",
     }
 
 )
+
 
 export const deleteSessionAsync = createAsyncThunk("sessions/deleteSession",
     async(deleteId) => {

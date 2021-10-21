@@ -19,14 +19,15 @@ function Session({session, onBack}) {
     // const renderWorkouts = session.workouts.map( (workout) => <Workout key={uuid()} workout={workout} /> )
     // const renderTemplate = workoutsTemplate.map( (workout) => <Workout key={uuid()} workout={workout} /> )
     return (
-        <div>
+        <div className="li">
              <h2>THe DEEtS</h2>
+            <br/><button onClick={onBack}> go back</button><br/>
             {session.date}
             <CreateWorkout session_id={session.id} />
             <h1>Workouts</h1>
             {session.workouts.length > 0 ? session.workouts.map( (workout) => <Workout key={uuid()} workout={workout} />) : null}
 
-            <br/><button onClick={onBack}> go back</button><br/>
+            
             
             <button onClick={handleDelete}>delete session</button><br/>
         </div>

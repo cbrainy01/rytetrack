@@ -6,6 +6,9 @@ import Session from './Session'
 import { setSelectedSession } from '../../state/sessionSlice'
 import { useDispatch } from 'react-redux'
 import { createFromTemplate } from '../../state/sessionSlice'
+import "../../styling/body.css"
+import "../../styling/sessions.css"
+import {IoReturnDownForwardOutline} from "react-icons/io5"
 
 function Sessions() {
     
@@ -55,13 +58,14 @@ function Sessions() {
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     const renderMonths = months.map( (month, index) => <option value={index < 9 ? `0${index + 1}` : index + 1} key={uuid()}>{month}</option> )
     
-    const renderSessions = pagination().map( (session) => <div key={uuid()}>
-        <li onClick={() => dispatch( setSelectedSession(session) )} >
+    const renderSessions = pagination().map( (session) => <div className="li" key={uuid()} >
+        <div  >
             <p>{session.date}</p>
             {/* preview of workouts */}
-        </li>
+        </div>
         
-        <button onClick={() => templateCreate(session.workouts)}>use session as template</button>
+        <button className="button1" onClick={() => templateCreate(session.workouts)}>use session as template</button>
+        <IoReturnDownForwardOutline onClick={() => dispatch( setSelectedSession(session) )} className="enter_icon"/>
     </div> )
 
     function templateCreate(workouts) {
@@ -109,7 +113,7 @@ function Sessions() {
     
     
     return (
-        <div>
+        <div className="body">
             SESSIONS PAGE
             {/* <CreateSession/> */}
 
@@ -126,9 +130,9 @@ function Sessions() {
                 <option value="all">all</option>
                 {renderMonths}
             </select>
-            {renderSessions}
+            <div className="ul">{renderSessions}</div>
+            
            
-            {/* <button>Create session from scratch</button> */}
             <nav>
                 <ul>
                     {pageNumbers.map( (number) => <div key={uuid()}>

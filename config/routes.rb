@@ -15,9 +15,9 @@ Rails.application.routes.draw do
   delete "/purge/:id", to: "exercises#purge"
   patch "/remove_pic/:id/:pic_id", to: "exercises#remove_pic"
   
-  get "/my_exercises", to: "exercises#my_exercises"
-  get "/my_sessions", to: "sessions#my_sessions"
-  get "/my_workouts", to: "workouts#my_workouts"
+  post "/my_exercises", to: "exercises#my_exercises"
+  post "/my_sessions", to: "sessions#my_sessions"
+  post "/my_workouts", to: "workouts#my_workouts"
   patch "/remove_vid/:id", to: "exercises#remove_vid"
   post "/add_pic/:id", to: "exercises#add_pic"
 

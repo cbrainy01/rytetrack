@@ -34,9 +34,10 @@ function App() {
 
   return (
     <>
-      <p>Rytetrack</p>
-      <p>{userInfo.user ? userInfo.user.username : "nobody" } is logged in</p>
       <Navbar/>
+      {/* <p>Rytetrack</p> */}
+      {/* <p>{userInfo.user ? userInfo.user.username : "nobody" } is logged in</p> */}
+      
       {/* <Loader/> */}
       {status === "loading" ? <Loader/> : 
       <Switch>
