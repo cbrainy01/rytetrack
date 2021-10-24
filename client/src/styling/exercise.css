@@ -1,0 +1,72 @@
+.exercise {
+    background-color: #0a0607;
+    color: white;
+    border-radius: 1rem;
+    margin-top: 20px;
+}
+
+.exercise_name {
+    text-align: center;
+    font-size: 1.5em;
+}
+
+.exercise button {
+    /* position: relative; */
+    /* margin-left: 50%; */
+
+    margin-top: 1em;
+    border: none;
+    border-radius: 4px;
+    translate: ease-out 0.3s;
+    font-size: 0.9em;
+    outline: none;
+    border: 3px solid rgb(223, 221, 217);
+    z-index: 1;
+}
+.exercise button:hover {
+    transform: scale(1.05);
+}
+.media {
+    display: flex;
+}
+.vid {
+    position: relative;
+    margin-left: 150px;
+}
+.remove_vid {
+    margin-left: 60%;
+}
+.trash_vid {
+    margin-top: 235px;
+    font-size: 1.15em;
+}
+.trash_vid:hover {
+    transform: scale(1.15);
+}
+.trash {
+    font-size: 1.05em;
+    margin-right: 20px;
+}
+.trash:hover {
+    transform: scale(1.15);
+}
+
+.paginator {
+    display: flex;
+    /* justify-content: space-between; */
+    /* margin-left: -24px; */
+}
+.paginator button {
+    margin-left: 15px;
+    /* border: none; */
+    border-radius: 4px;
+    translate: ease-out 0.3s;
+    font-size: 1.3em;
+    outline: none;
+    border: 3px solid rgb(223, 221, 217);
+    z-index: 1;
+}
+.paginator button:hover {
+    transform: scale(1.05);
+
+}

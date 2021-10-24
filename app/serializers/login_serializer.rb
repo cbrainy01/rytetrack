@@ -1,7 +1,7 @@
 class LoginSerializer < ActiveModel::Serializer
   has_many :exercises
-  
-  attributes :id, :first_name, :last_name, :username, :email, :exercises, :token 
+  has_many :workouts, through: :sessions
+  attributes :id, :first_name, :last_name, :username, :workouts, :email, :exercises, :token 
 
   def token
     user = User.find_by(username: self.object.username)

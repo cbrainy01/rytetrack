@@ -15,6 +15,7 @@ function Signup() {
 
     return (    
     <div>
+        <h1>Signup</h1>
         <form onSubmit={handleSubmit( (data, e) => {e.preventDefault(); console.log(data); dispatch( signUpUserAsync(data) ); } )}>
             <input type="text" placeholder="firstName" name="first_name" {...register("first_name", {required: true})}/><br/>
             <input type="text" placeholder="lastName" name="last_name" {...register("last_name")}/><br/>

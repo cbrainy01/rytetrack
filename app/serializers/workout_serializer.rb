@@ -1,6 +1,18 @@
 class WorkoutSerializer < ActiveModel::Serializer
-  attributes :id, :user_id, :session_id, :exercise_id, :sets, :exercise_name, :weight, :birack, :reps, :weight, :notes, :rest_time, :difficulty, :avg_speed, :avg_incline, :miles, :bar, :rest_time_string, :plate_arrangement
+  attributes :id, :user_id, :session_id, :exercise_id, :sets, :exercise_name, :weight, :birack, :reps, :weight, :notes, :rest_time, :difficulty, :avg_speed, :avg_incline, :miles, :bar, :rest_time_string, :plate_arrangement, :session_date, :exercise_section, :is_cardio
 
+ 
+  def is_cardio
+    self.object.exercise.is_cardio
+  end
+
+  def exercise_section
+    self.object.exercise.section
+  end
+
+  def session_date
+    self.object.session.date
+  end
 
   def exercise_name
     self.object.exercise.name

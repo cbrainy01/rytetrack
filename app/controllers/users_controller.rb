@@ -34,6 +34,8 @@ class UsersController < ApplicationController
         render json: { result: "Sucessfully got through before action and protected info can be seen. AKA user is authorized"}, status: 200
     end
 
+
+
     private
 
     def user_params

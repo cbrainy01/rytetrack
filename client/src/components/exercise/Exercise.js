@@ -6,6 +6,8 @@ import { editExerciseAsync } from '../../state/exerciseSlice'
 import { useSelector } from 'react-redux'
 import { setEditMode } from '../../state/exerciseSlice'
 import { addPicAsync } from '../../state/exerciseSlice'
+import {IoTrashOutline} from "react-icons/io5"
+import "../../styling/exercise.css"
 
 function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
     
@@ -37,8 +39,9 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
     function renderVid() {
         if (exercise.youtube_url.length > 0) {
             const vidId = getId(exercise.youtube_url)
-            return <><iframe width="560" height="315" title={`${exercise.name} video demonstration`} src={`//www.youtube.com/embed/${vidId}?start=${exercise.timestamp}`} frameBorder="0" allowFullScreen></iframe>
-            <button onClick={handleRemoveVideo}>remove video</button></>
+            return <><iframe className="vid" width="450" height="260" title={`${exercise.name} video demonstration`} src={`//www.youtube.com/embed/${vidId}?start=${exercise.timestamp}`} frameBorder="0" allowFullScreen></iframe>
+            <IoTrashOutline className="trash_vid" onClick={handleRemoveVideo}/></>
+            {/* <br/><button className="remove_vid" onClick={handleRemoveVideo}>remove video</button></> */}
         } 
         else {return null}
     }
@@ -101,12 +104,14 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         console.log("in the works")
         const picInfo = {exercise_id: exercise.id, new_demo: demo}
 
-        if(demo !== null && exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
+        if( exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
+        else if( exercise.demos.length === 1 && demo === null ) {alert("no file selected")}
+        // if(demo !== null && exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
         else { dispatch( addPicAsync({exercise_id: exercise.id, new_demo: demo}) ) }
     }
 
     return (
-        <div>
+        <div className="exercise">
 
             
         {editMode === exercise.id? 
@@ -123,7 +128,7 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         <textarea name="description" placeholder="description" onChange={handleChange} value={formDataEdit.description} /><br/>
         {/* <input onChange={handleDemo1Select} type="file" name="demo_1" /><br/>
         <input onChange={handleDemo2Select} type="file" name="demo_2" /><br/> */}
-        <label>Is this a cardiovascular exercise?(default is no)</label><br/>
+        <label>Is this a cardiovascular exercise?</label><br/>
         <label>yes</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={true} />
         <label>no</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={false} /><br/>
         <input name="youtube_url" type="text" placeholder="youtube url" onChange={handleChange} value={formDataEdit.youtube_url} />
@@ -136,14 +141,16 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         </>
         :
         <>
-         <h3>{exercise.name}</h3>
-            {exercise.demos ? exercise.demos.map( (demo) => <DemoPic key={uuid()} picInfo={demo} exercise_id={exercise.id} /> ) : null}  
-            {/* {exercise.demos.length > 0 ? exercise.demos.map( (url) => <DemoPic key={uuid()} url={url} exercise_id={exercise.id} onRemovePic={onRemovePic} /> ) : null}   */}
-            <br/>
-            {renderVid()}
+         <h3 className="exercise_name">{exercise.name}</h3>
             <p>Description: {exercise.description}</p>
-            <button onClick={handleDeleteClick} >delete exercise</button><br/>
-            <button onClick={() => dispatch( setEditMode(exercise.id) )}>edit exercise</button>
+            <section className="media">
+                <div style={{display: "flex"}}>
+                    {exercise.demos ? exercise.demos.map( (demo) => <DemoPic key={uuid()} picInfo={demo} exercise_id={exercise.id} /> ) : null}  
+                </div>
+                {renderVid()}
+            </section>
+            <br/><button  onClick={handleDeleteClick} >delete exercise</button>
+            <button style={{marginLeft: "50px"}} onClick={() => dispatch( setEditMode(exercise.id) )}>edit exercise</button>
         </>
         }
 

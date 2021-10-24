@@ -2,6 +2,7 @@ class User < ApplicationRecord
     has_secure_password
     has_many :exercises, dependent: :destroy
     has_many :sessions, dependent: :destroy
+    has_many :workouts, through: :sessions
     validates :username, presence: true, uniqueness: true, length: {maximum: 40}
     
     # , uniqueness: true

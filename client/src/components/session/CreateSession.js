@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { createSessionAsync } from '../../state/sessionSlice';
 import { useDispatch } from 'react-redux';
+import "../../styling/createsession.css"
 
 function CreateSession() {
     
@@ -36,8 +37,8 @@ function CreateSession() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input onChange={handleChange} type="date" name="date" value={formData.date}></input>
-                <button>create session from scratch</button>
+                <input style={{fontSize: "1.3em"}} onChange={handleChange} type="date" name="date" value={formData.date}></input>
+                <button className="scratch_button">create session from scratch</button>
             </form>
         </div>
     )

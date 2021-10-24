@@ -20,7 +20,7 @@ function Navbar() {
         <div>
                 <Nav>
                     <NavLink to="/">
-                        <h1>Logo</h1>
+                        <h1 style={{fontSize: "3.5em"}}>Rytetrack</h1>
                     </NavLink>
                     
                     <Bars />

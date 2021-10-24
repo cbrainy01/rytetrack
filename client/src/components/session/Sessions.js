@@ -124,23 +124,24 @@ function Sessions() {
             :
             <>
             <h3>Sessions</h3>
-            <CreateSession/>
+            <CreateSession/><br/><br/>
             {/* <button onClick={scratchCreate}>create session from scratch</button><br/> */}
-            <select onChange={ (e) => setFilterValue(e.target.value) } value={filterValue}>
+            <label style={{fontSize: "1.3em"}}>Filter by month</label>
+            <select style={{fontSize: "1.3em"}} onChange={ (e) => setFilterValue(e.target.value) } value={filterValue}>
                 <option value="all">all</option>
                 {renderMonths}
             </select>
             <div className="ul">{renderSessions}</div>
             
            
-            <nav>
-                <ul>
+            <nav >
+                <div className="paginator">
                     {pageNumbers.map( (number) => <div key={uuid()}>
-                    <li key={number} >
+                    <p key={number} >
                         <button  onClick={ () => changePage(number) }  >{number}</button>
-                    </li>
+                    </p>
                     </div> )}
-                </ul>
+                </div>
             </nav>
             </>
             }

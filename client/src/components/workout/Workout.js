@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { editWorkoutAsync } from '../../state/sessionSlice'
 import { setEditMode } from '../../state/sessionSlice'
+import "../../styling/workout.css"
 
 function Workout({workout}) {
     
@@ -137,7 +138,7 @@ function Workout({workout}) {
      </div> )
     // console.log("plate arrangement: ", Object.keys(workout.plate_arrangement) )
     return (
-        <div>
+        <div className="container">
             {editMode === workout.id ? 
             <>
             <form onSubmit={handleEditSubmit}>
@@ -152,7 +153,7 @@ function Workout({workout}) {
                 </select>
                {renderWeightSelect}
 
-                <p>are there plates on both sides? (default is yes)</p>
+                <p>are there plates on both sides?</p>
                 <label>yes</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": true})} /**value={true}*/ />
                 <label>no</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": false})} /*value={false}*/ /><br/>
                 <select name="bar" onChange={handleNumChange}>
@@ -184,15 +185,15 @@ function Workout({workout}) {
             <>
             
             <p>exercise name: {workout.exercise_name}</p> 
-            <p>sets: {workout.sets}</p> 
-            <p>reps: {workout.reps}</p> 
-            <p>weight: {workout.weight}</p> 
-            <p>rest time btwn sets: {workout.rest_time_string}</p> 
-            <p>difficulty: {workout.difficulty}</p> 
-            <p>avg speed: {workout.avg_speed}</p> 
-            <p>avg incline: {workout.avg_incline}</p> 
-            <p>miles: {workout.miles}</p> 
-            <p>notes: {workout.notes}</p>
+            {workout.sets ? <p>sets: {workout.sets}</p>  : null}
+            {workout.reps ? <p>reps: {workout.reps}</p>  : null}
+            {workout.weight ? <p>weight: {workout.weight}</p> : <p>weight: 0</p>} 
+            {workout.rest_time_string ? <p>rest time btwn sets: {workout.rest_time_string}</p>  : null}
+            {workout.difficulty ? <p>difficulty: {workout.difficulty}</p>  : null}
+            {workout.avg_speed ? <p>avg speed: {workout.avg_speed}</p>  : null}
+            {workout.avg_incline ? <p>avg incline: {workout.avg_incline}</p>  : null}
+            {workout.miles ? <p>miles: {workout.miles}</p>  : null}
+            {workout.notes ? <p>notes: {workout.notes}</p> : null}
             {displayPlateArrangement} 
             <button onClick={() => dispatch(setEditMode(workout.id))}>edit workout</button>
 

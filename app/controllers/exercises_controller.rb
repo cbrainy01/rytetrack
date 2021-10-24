@@ -4,7 +4,7 @@ class ExercisesController < ApplicationController
     # skip_before_action :authorize, only: :create
 
     def create
-        byebug
+        # byebug
         exercise = Exercise.create!(exercise_params)
         render json: exercise, serializer: ExerciseSerializer
 

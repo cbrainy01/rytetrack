@@ -1,22 +1,23 @@
 .input {
-        position: relative;
+        /* position: relative;
         top: 0;
         left: 0;
         width: 25%;
         height: 100%;
         border: 2px solid gray;
         border-radius: 0.6rem;
-        color: white;
+        color: #0a0607;
         outline: none;
         padding: .5rem;
-        background: none;
+        background: white;
+        margin-left: 15%; */
   
 }
 .input:hover {
-    border-color: red;
+    border-color: #069fc5;
 }
 .input:focus {
-    border-color: yellow;
+    border-color: #0a0607;
 }
 
 /* .input:focus ~ .label, .input:not(:placeholder-shown).input:not(:focus) ~.label {
@@ -35,14 +36,45 @@
 
 .label {
     position: relative;
-    left: 11rem;
-    top: -0.1rem;
+    font-size: 1.5em;
+    /* left: 11rem; */
+    /* top: -0.1rem; */
     padding: 0 0.5rem;
-    color: white;
+    color: red;
+    /* color: #0a0607; */
     cursor: text;
     transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
     /* background-color: blueviolet; */
 }
 
+.plate_layout {
+    display: flex;
+}
+.plate {
+    margin-left: 50px;
+}
 
+.circle_icon {
+    font-size: 1.5em;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+
+.circle_icon:hover {
+    transform: scale(1.5);
+}
+
+.add_workout {
+    margin-left: 15px;
+    /* border: none; */
+    border-radius: 4px;
+    translate: ease-out 0.3s;
+    font-size: 1.3em;
+    outline: none;
+    border: 3px solid rgb(223, 221, 217);
+    z-index: 1;
+}
+.add_workout:hover {
+    transform: scale(1.05);
+}
 

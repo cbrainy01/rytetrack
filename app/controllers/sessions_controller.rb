@@ -9,26 +9,19 @@ class SessionsController < ApplicationController
     end
 
     def template_create
-        # byebug
         session = Session.create!(date: params[:date], user_id: params[:user_id])
         session_id = session.id 
         user_id = params[:user_id]
         workouts = params[:workouts]
         workouts.each do |workout|
-            # create a new workout record using the date
-            # get all attributes except for id
-            # keys = workout.keys
-            # keys.each do |key|
-            # end
-            create_info = workout.except(:id)
+       
+            create_info = workout.except(:id, :exercise_name, :is_cardio, :exercise_section, :session_date, :plate_arrangement, :rest_time_string)
             create_info[:session_id] = session_id
+            
             create_info.permit!
-            # byebug
-            # count = 2
-            # create_info = { user_id: user_id, session_id: session_id, exercise_id: 130, reps: (count + 1), notes: "hey there" } 
             Workout.create!(create_info)
         end
-        # byebug
+
         render json: session, serializer: SessionSerializer
         # check out session to make sure it has the workouts
         #if session has the new workouts, render as json using serializer

@@ -29,15 +29,7 @@
     background: #ff3772;
 }
 
-.enter_icon {
-    font-size: 2.5em;
-    margin-left: 80%;
-    position: absolute;
-}
-.enter_icon:hover {
-    
-    background: #0a0607;
-}
+
 
 /* .input {
     position: absolute;

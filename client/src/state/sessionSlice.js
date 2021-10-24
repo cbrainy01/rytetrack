@@ -10,6 +10,7 @@ const initialState = {
     selectedSession: null,
     workoutErrors: null,
     workoutEditErrors: null,
+    editDateMode: false,
     editMode: false,
 }
 
@@ -75,12 +76,12 @@ export const deleteSessionAsync = createAsyncThunk("sessions/deleteSession",
 
 export const updateSessionDate = createAsyncThunk( "sessions/updateDate",
     async(updateInfo) => {
-        const fData = new FormData()
-        fData.append("date", updateInfo.newDate )
+        // const fData = new FormData()
+        // fData.append("date", updateInfo.newDate )
         const response = await fetch(`/sessions/${updateInfo.id}`, { 
         method: "PATCH",
         headers: {"Content-Type": "application/json", "Authorization": `Bearer ${localStorage.token}`,},
-        body: fData,
+        body: JSON.stringify({date: updateInfo.newDate}),
         })
 
         if(response.ok) {const rData = await response.json(); return rData}
@@ -158,6 +159,7 @@ const sessionSlice = createSlice({
             state.workoutEditErrors = null;
             state.workoutErrors = null;
             state.editMode = false;
+            state.editDateMode = false;
         }, 
 
         setSelectedSession(state, session) {
@@ -169,6 +171,9 @@ const sessionSlice = createSlice({
         setEditMode(state, action) {
             state.rejectionErrors.push(action.payload)
             state.editMode = action.payload
+        },
+        setEditDateMode(state, action) {
+            state.editDateMode = action.payload
         }
 
     },
@@ -199,6 +204,7 @@ const sessionSlice = createSlice({
                 // filter sessions and leave out one which id matches deletedId
                 state.sessions = state.sessions.filter( (session) => session.id !== action.payload.deletedId )
                 state.selectedSession = null
+                state.status = "idle"
             }
             else { state.rejectionErrors.push("did not delete sucessfully") }
         },
@@ -209,6 +215,12 @@ const sessionSlice = createSlice({
             if(action.payload.message) {
                 // payload looks like { message: "...sdf", updateId: id, newDate: "2015-03-06" }
                 // change state so that the updated session has new date
+                state.sessions = state.sessions.map( (session) => {
+                    if(session.id === action.payload.updateId) { session.date = action.payload.newDate; return session }
+                    else {return session}
+                } )
+                state.selectedSession.payload.date = action.payload.newDate
+                state.editDateMode = false;
             }
         },
 
@@ -225,11 +237,17 @@ const sessionSlice = createSlice({
         [deleteWorkoutAsync.fulfilled](state, action) {
             state.status = "idle";
             if(action.payload.message) {
-                const sesh = state.sessions.find( (session) => session.id === action.payload.session_id )
-                sesh.workouts = sesh.workouts.filter( (workout) => workout.id !== action.payload.deletedId  )
-                state.selectedSession.payload = sesh
+                state.sessions.map( (session) => {
+                    if(session.id === action.payload.session_id) {
+                        session.workouts = session.workouts.filter( (workout) => workout.id !== action.payload.deletedId )
+                        return session
+                    }
+                    else {return session}
+                } )
+            
+                state.selectedSession.payload.workouts = state.selectedSession.payload.workouts.filter( (workout) => workout.id !== action.payload.deletedId )
             }
-            state.rejectionErrors.push(action.payload)
+            // state.rejectionErrors.push(action.payload)
         },
         [deleteWorkoutAsync.pending](state) {state.status = "loading"},
         [deleteWorkoutAsync.rejected](state, action) {state.rejectionErrors.push("didnt delete")},
@@ -244,6 +262,15 @@ const sessionSlice = createSlice({
                 x.workouts.push(action.payload)
                 state.selectedSession.payload = x
                 state.workoutEditErrors = null
+                state.workoutErrors = null
+                // also modify sessions to include added workout
+               state.sessions = state.sessions.map( (session) => {
+                    if(session.id === x.id) {
+                        session.workouts.push(action.payload)
+                        return session
+                    }
+                    else {return session}
+                } )
             }
             else { state.workoutErrors = action.payload.errors }
         },
@@ -264,8 +291,22 @@ const sessionSlice = createSlice({
                 state.selectedSession.payload = x
                 state.workoutErrors = null
                 state.editMode = false
+                state.createErrors = null
+                state.workoutEditErrors = null
+
+                // modify sessions and add new workout to workouts of selected session
+                state.sessions = state.sessions.map( (session) => {
+                    if(session.id === state.selectedSession.payload.id) {
+                        session.workouts = session.workouts.map( (workout) => {
+                            if(workout.id === action.payload.id) {return action.payload}
+                            else {return workout}
+                        } )
+                        return session
+                    }
+                    else {return session}
+                } )
             }
-            else { state.workoutEditErrors = action.payload.errors; state.editMode = true }
+            else { state.workoutEditErrors = action.payload.errors; }
         },
         [editWorkoutAsync.pending](state) {state.status = "loading"},
         [editWorkoutAsync.rejected](state, action) {state.rejectionErrors.push(action.payload)},
@@ -275,14 +316,6 @@ const sessionSlice = createSlice({
 
 })
 
-export const { sessionLogout, setSelectedSession, setEditMode } = sessionSlice.actions
+export const { sessionLogout, setSelectedSession, setEditMode, setEditDateMode } = sessionSlice.actions
 export default sessionSlice.reducer 
 
-// state.selectedSession = state.sessions.map( (session) => {
-//                     if(session.id === action.payload.session_id) {
-//                         session.workouts = session.workouts.filter( (workout) => workout.id !== action.payload.deletedId ) 
-//                         return session
-//                     }
-//                     else {return session}
-
-// } )

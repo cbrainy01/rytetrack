@@ -12,7 +12,7 @@ import { removePicAsync } from '../../state/exerciseSlice'
 function Exercises() {
 
     const [currentPage, setCurrentPage] = useState(1)
-    const [exercisesPerPage] = useState(10)
+    const [exercisesPerPage] = useState(6)
 
     const [filterValue, setFilterValue] = useState("all")
     const [searchValue, setSearchValue] = useState("")
@@ -80,15 +80,15 @@ console.log("exercises are: ", pagination())
                 <option value="cardio">cardio</option>
             </select>
             <p>Created exercises: </p>
-            <ul>{renderExercises}</ul>
+            <div className="exercise_container">{renderExercises}</div>
             <nav>
-                <ul>
+                <div className="paginator">
                     {pageNumbers.map( (number) => <div key={uuid()}>
-                    <li key={number} >
+                    <p key={number} >
                         <button  onClick={ () => changePage(number) }  >{number}</button>
-                    </li>
+                    </p>
                     </div> )}
-                </ul>
+                </div>
             </nav>
             {error? <p>{error}</p> : null}
             

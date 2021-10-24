@@ -4,6 +4,8 @@ import {v4 as uuid} from "uuid"
 import { createWorkoutAsync } from "../../state/sessionSlice"
 import { useDispatch } from 'react-redux'
 import Loading from "../../Loading"
+import {IoRemoveCircle} from "react-icons/io5"
+import {IoAddCircle} from "react-icons/io5"
 import "../../styling/createworkout.css"
 
 function CreateWorkout({session_id}) {
@@ -111,6 +113,7 @@ function CreateWorkout({session_id}) {
     }
     function handlePlateClick(e) {
         if(plates[e.target.name] >= 1 && e.target.value === "-") { setPlates( {...plates, [e.target.name]: plates[e.target.name] - 1 }) }
+        else if(plates[e.target.name] === 0 && e.target.value === "-") { setPlates( {...plates}) }
         else if( e.target.value === "+" ) { setPlates( {...plates, [e.target.name]: plates[e.target.name] + 1 }) }
     }
     function convertTimestamp(timestamp) {
@@ -124,11 +127,12 @@ function CreateWorkout({session_id}) {
     }
 
     const weightDropdown = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map( (num) => <option key={uuid()} value={num}>{num}</option> )
-    const renderWeightSelect = ['45', '35', '25', '10', '5', '2.5'].map( (num) => <div key={uuid()}>
+    const renderWeightSelect = ['45', '35', '25', '10', '5', '2.5'].map( (num) => <div className="plate" key={uuid()}>
         <h2>{num}</h2>
         <p>{plates[num]}</p>
-        <button name={num} value="-" onClick={handlePlateClick }>-</button>
-        <button name={num} value="+" onClick={handlePlateClick}>+</button><br/>
+      
+        <button className="circle_icon"  name={num} value="-" onClick={handlePlateClick }>-</button>
+        <button className="circle_icon" style={{fontSize: "1.45em"}} name={num} value="+" onClick={handlePlateClick}>+</button>
 
     </div> )
 
@@ -145,12 +149,12 @@ function CreateWorkout({session_id}) {
                     <option value="" >select exercise</option>
                     {exercisesDropdown}
                 </select>
-               {renderWeightSelect}
+               <div className="plate_layout">{renderWeightSelect}</div>
 
-                <p>are there plates on both sides? (default is yes)</p>
+                <br/><p>are there plates on both sides? (default is yes)</p>
                 <label>yes</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": true})} /**value={true}*/ />
                 <label>no</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": false})} /*value={false}*/ /><br/>
-                <select name="bar" onChange={handleNumChange}>
+                <br/><select name="bar" onChange={handleNumChange}>
                     <option value={0}>select barbell type</option>
                     <option value={0}>no bar</option>
                     <option value={45}>standard barbell</option>
@@ -159,19 +163,29 @@ function CreateWorkout({session_id}) {
                     <option value={15}>curl bar</option>
                 </select><br/>
 
-                <p>pics of what the bars look like</p>
-                <label className="label">degree of difficulty</label>
-                <input className="input" onChange={handleNumChange} name="difficulty" placeholder="" ></input><br/>
-                <input onChange={handleNumChange} name="reps" placeholder="reps" ></input><br/>
-                <input onChange={handleNumChange} name="sets" placeholder="sets" ></input><br/>
-                <input onChange={handleChange}    name="rest_time" placeholder="rest time(0:00)"></input><br/>
-                <input onChange={handleDecimalChange} name="avg_speed" placeholder="average speed"></input><br/>
-                <input onChange={handleDecimalChange} name="avg_incline" placeholder="average incline"></input><br/>
-                <input onChange={handleDecimalChange} name="miles" placeholder="miles"></input><br/>
-                <textarea name="notes" placeholder="notes" onChange={handleChange} value={formData.notes} /><br/>
+                
+               
+                
+                    {/* <input className="input" onChange={handleNumChange} name="difficulty" placeholder="" ></input><br/> */}
+                <label className="label">degree of difficulti:</label>
+                    <input className="input" onChange={handleNumChange} name="difficulty" placeholder="" ></input><br/>
+                <label className="label">reps:</label>
+                    <input className="input" onChange={handleNumChange} name="reps" placeholder="" ></input><br/>
+                <label className="label">sets:</label>
+                    <input className="input" onChange={handleNumChange} name="sets" placeholder="sets" ></input><br/>
+                <label className="label">rest time:</label>
+                    <input className="input" onChange={handleChange}    name="rest_time" placeholder="rest time(0:00)"></input><br/>
+                <label className="label">average speed:</label>
+                    <input className="input" onChange={handleDecimalChange} name="avg_speed" placeholder="average speed"></input><br/>
+                <label className="label">average incline:</label>
+                    <input className="input" onChange={handleDecimalChange} name="avg_incline" placeholder="average incline"></input><br/>
+                <label className="label">miles:</label>
+                    <input className="input" onChange={handleDecimalChange} name="miles" placeholder="miles"></input><br/>
+                <label className="label">notes:</label>
+                    <textarea className="input" name="notes" placeholder="notes" onChange={handleChange} value={formData.notes} /><br/>
                 
                 { workoutErrors ?  workoutErrors.map( (error) => <p key={uuid()} style={{color: "red"}}>-{error}</p> ): null}
-                <br/><br/><button>Add workout</button>
+                <br/><button className="add_workout">Add workout</button>
             </form>
             }
             

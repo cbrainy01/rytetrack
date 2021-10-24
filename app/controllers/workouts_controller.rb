@@ -38,6 +38,8 @@ class WorkoutsController < ApplicationController
         render json: workouts, each_serializer: WorkoutSerializer
     end
 
+    
+
     private
 
     def workout_params
