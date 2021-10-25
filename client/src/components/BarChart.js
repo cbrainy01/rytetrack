@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 function BarChart() {
       
     let today = new Date();
-    let year = today.getFullYear();
+    let currentYear = today.getFullYear().toString();
 
     const workouts = useSelector(state => state.user.user.workouts)
     if(workouts === null) {return (<> <Line 
@@ -80,15 +80,15 @@ function BarChart() {
         const wo_year = workout.session_date.split("-")[0]
 
         months.forEach( (month) => {
-            if(workout.exercise_section === "upper" && wo_month === month && wo_year === "2021") {data_upper[month] += 1} 
+            if(workout.exercise_section === "upper" && wo_month === month && wo_year === currentYear) {data_upper[month] += 1} 
            
-         else if(workout.exercise_section === "lower" && wo_month === month && wo_year === "2021") {data_lower[month] += 1} 
+         else if(workout.exercise_section === "lower" && wo_month === month && wo_year === currentYear) {data_lower[month] += 1} 
            
-         else if(workout.exercise_section === "full" && wo_month === month && wo_year === "2021") {data_full[month] += 1} 
+         else if(workout.exercise_section === "full" && wo_month === month && wo_year === currentYear) {data_full[month] += 1} 
            
-         else if( workout.exercise_section === "core" && wo_month === month && wo_year === "2021") {data_core[month] += 1}
+         else if( workout.exercise_section === "core" && wo_month === month && wo_year === currentYear) {data_core[month] += 1}
            
-          else if(workout.exercise_is_cardio === true && wo_month === month && wo_year === "2021") {data_cardio[month] += 1} 
+          else if(workout.exercise_is_cardio === true && wo_month === month && wo_year === currentYear) {data_cardio[month] += 1} 
             
         } )
 

@@ -104,10 +104,13 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         console.log("in the works")
         const picInfo = {exercise_id: exercise.id, new_demo: demo}
 
-        if( exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
+        if( exercise.demos === null && demo === null ) {alert("no file selected")}
+        else if(exercise.demos === null && demo !== null) {dispatch( addPicAsync({exercise_id: exercise.id, new_demo: demo}) )}
+        else if( exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
         else if( exercise.demos.length === 1 && demo === null ) {alert("no file selected")}
         // if(demo !== null && exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
         else { dispatch( addPicAsync({exercise_id: exercise.id, new_demo: demo}) ) }
+
     }
 
     return (
