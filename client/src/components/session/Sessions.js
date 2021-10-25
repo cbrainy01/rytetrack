@@ -60,61 +60,45 @@ function Sessions() {
     
     const renderSessions = pagination().map( (session) => <div className="li" key={uuid()} >
         <div  >
-            <p>{session.date}</p>
-            {/* preview of workouts */}
+            <p className="date">{session.date}</p>
+            <p className="preview">{workoutsPreview(session)}</p>
         </div>
         
         <button className="button1" onClick={() => templateCreate(session.workouts)}>use session as template</button>
         <IoReturnDownForwardOutline onClick={() => dispatch( setSelectedSession(session) )} className="enter_icon"/>
     </div> )
 
+    function workoutsPreview(session) {
+        // if there are more than 45 characters when workouts are c
+        const characterLength = session.workouts.map( (workout) => workout.exercise_name.length ).reduce( (a, b) => a + b, 0 )
+        if(characterLength > 70) { 
+            const preview = [];
+            let characterCount = 0;
+            for (let i = 0; i < session.workouts.length; i++) {
+                characterCount += session.workouts[i].exercise_name.length
+                if(characterCount > 70) {break}
+                else { preview.push(session.workouts[i].exercise_name) }
+            }
+            return preview.join(",  ") + "..."
+        }
+        else { 
+            const workouts = session.workouts.map( (workout) => workout.exercise_name )
+            return workouts.join(",  ")
+        }
+    }
+
     function templateCreate(workouts) {
-        // dispatch action which creates a new session,
-        // create variable in store called template. the current sessions workouts will be
-        // stored in that variable
-        
-        //  Object.map(workouts)
-        // const keys = Object.keys(workouts)
-        // let updatedObj = {}
-        // const safe = []
-
-        // const updatedWorkouts = workouts.forEach( (workout) => {
-        //     const keys = Object.keys(workout).filter( (key) => key !== "id" )
-
-        //     keys.forEach( (key) => {
-        //         updatedObj = {...updatedObj, key: workout[key]}
-        //     } )
-        //     // WORKOUT: {id: 1, user_id: 3, session_id: 2, exercise_id: 130, sets: 8}
-        //     // KEYS: ['user_id', 'session_id', 'exercise_id', 'sets']
-           
-        //     //    I WANNA RETURN { user_id: 3, session_id: 2, exercise_id: 130, sets: 8 }
-            
-        // } ) 
-        // console.log("obj upd: ", updatedObj)
-
-        // console.log("updated workouts: ", updatedWorkouts)
-        // console.log("--", workouts, "date: ", today, "updated: ", updatedWorkouts)
         const template = { workouts: workouts, date: today, user_id: userId }
         dispatch( createFromTemplate(template) )
         // dispatch an action which creates a session as well as workouts for that session
     }
 
-    function scratchCreate() {
-        // redirect to <CreateSession/>
-        // pass session
-
-        // dispatch action which creates a session with the date,
-        // store that session in state as scratchSession
-        // when async action is done, set scratchSession to value returned from create action
-
-    }
 
     
     
     
     return (
         <div className="body">
-            SESSIONS PAGE
             {/* <CreateSession/> */}
 
             {selectedSession ? 
@@ -123,7 +107,8 @@ function Sessions() {
             </> 
             :
             <>
-            <h3>Sessions</h3>
+            {/* <h3>Sessions</h3> */}
+            <h1 className="header">Sessions</h1>
             <CreateSession/><br/><br/>
             {/* <button onClick={scratchCreate}>create session from scratch</button><br/> */}
             <label style={{fontSize: "1.3em"}}>Filter by month</label>

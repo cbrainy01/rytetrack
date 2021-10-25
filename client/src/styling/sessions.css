@@ -92,7 +92,9 @@
     transform: scale(1.05);
 
 }
-
+.header{
+    text-align: center;
+}
 .enter_icon {
     font-size: 2.5em;
     margin-left: 80%;
@@ -110,4 +112,11 @@
 }
 .date_edit:hover {
     transform: scale(1.15);
+}
+
+.date {
+    text-decoration: underline;
+}
+.preview {
+    font-size: 1.1em;
 }
