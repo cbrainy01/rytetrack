@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import { useSelector } from 'react-redux'
 import { Nav, NavLink, Bars, NavMenu, NavBtn, NavBtnLink } from "./NavbarElements"
+import { fetchUserInfo } from '../state/userSlice'
 
 
 
@@ -16,6 +17,10 @@ function Navbar() {
     const dispatch = useDispatch()
 
     const isAuthorized = useSelector(state => state.user.isAuthorized)
+    function handleStatisticsClick() {
+        if(isAuthorized) { dispatch( fetchUserInfo(localStorage.token) ) }
+    }
+
     return (
         <div>
                 <Nav>
@@ -40,7 +45,7 @@ function Navbar() {
                         <NavLink to="/sessions" activeStyle>
                             Sessions
                         </NavLink>
-                        <NavLink to="/statistics" activeStyle>
+                        <NavLink onClick={handleStatisticsClick} to="/statistics" activeStyle>
                             Statistics
                         </NavLink>
                         {isAuthorized ? null : <NavBtn><NavBtnLink to="/signup">Sign up</NavBtnLink></NavBtn>}

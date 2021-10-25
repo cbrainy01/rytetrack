@@ -99,7 +99,6 @@ function Sessions() {
     
     return (
         <div className="body">
-            {/* <CreateSession/> */}
 
             {selectedSession ? 
             <> 
