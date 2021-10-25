@@ -167,7 +167,7 @@ const exerciseSlice = createSlice({
         [deletePicAsync.rejected](state) {state.rejectionError.push("didnt work for some reason")},
 
         [getExercisesAsync.fulfilled](state, action) {
-            if(action.payload.error) {state.rejectionError = action.payload.error}
+            if(action.payload.message) {state.rejectionError = action.payload.message}
             else {state.exercises = action.payload}
         },
         [persistExercisesAsync.fulfilled](state, action) {

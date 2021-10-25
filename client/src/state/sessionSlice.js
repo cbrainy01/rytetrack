@@ -191,7 +191,7 @@ const sessionSlice = createSlice({
         [createSessionAsync.rejected](state) {state.rejectionErrors.push("didnt go through")},
 
         [getSessionsAsync.fulfilled](state, action) {
-            if(action.payload.error) {state.rejectionErrors = action.payload.error}
+            if(action.payload.message) {state.rejectionErrors = action.payload.message}
             else { state.sessions = action.payload }
         },
 
