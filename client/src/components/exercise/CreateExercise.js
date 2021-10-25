@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux'
 import { createExerciseAsync } from '../../state/exerciseSlice'
 import {v4 as uuid} from "uuid"
 import { useSelector } from 'react-redux'
+import "../../styling/inputs.css"
+// import "../../styling/createworkout.css"
 
 function CreateExercise() {
     
@@ -75,24 +77,36 @@ function CreateExercise() {
 
     return (
         <div>
-            Create Exercise
+            <h3 style={{marginBottom: "1.5em"}}>Create Exercise</h3>
             <form onSubmit={handleSubmit}>
-            <input type="text" placeholder="exercise name" name="name" onChange={handleChange} value={formData.name}/><br/>
-            <select name="section" value={formData.section} onChange={handleChange}>
+            <input className="input" type="text" placeholder=" " name="name" onChange={handleChange} value={formData.name}/>
+            <label className="label">exercise name </label><br/>
+               
+            <label>Select workout type</label>
+            <select className="dropdown" name="section" value={formData.section} onChange={handleChange}>
                 <option value="none">none</option>
                 <option value="upper">upper body</option>
                 <option value="lower">lower body</option>
                 <option value="full">full body</option>
                 <option value="core">core</option>
             </select><br/>
-            <textarea name="description" placeholder="description" onChange={handleChange} value={formData.description} /><br/>
-            <input onChange={handleDemo1Select} type="file" name="demo_1" /><br/>
+
+            <textarea className="input" name="description" placeholder=" " onChange={handleChange} value={formData.description} />
+            <label className="label">description </label><br/>
+               
+            <input onChange={handleDemo1Select} type="file" name="demo_1" /><br/>               
             <input onChange={handleDemo2Select} type="file" name="demo_2" /><br/>
-            <label>Is this a cardiovascular exercise?(default is no)</label><br/>
+               
+            <label>Is this a cardiovascular exercise?(default is no)</label><br/>  
             <label>yes</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={true} />
-            <label>no</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={false} /><br/>
-            <input name="youtube_url" type="text" placeholder="youtube url" onChange={handleChange} value={formData.youtube_url} />
-            <input name="timestamp" type="text" placeholder="youtube timestamp (0:00)" onChange={handleChange} value={formData.timestamp}/><br/>
+            <label>no</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={false} /><br/><br/>
+               
+            <input name="youtube_url" className="input" type="text" placeholder=" " onChange={handleChange} value={formData.youtube_url} />
+            <label className="label"> youtube url</label><br/>
+               
+            <input name="timestamp" className="input" type="text" placeholder=" " onChange={handleChange} value={formData.timestamp}/> 
+            <label className="label">youtube timestamp</label><br/>
+               
             <input type="submit"/>
             </form>
             {createErrors ? createErrors.map( (error) => <p key={uuid()} style={{color: "red"}} >-{error}</p> ) : null}

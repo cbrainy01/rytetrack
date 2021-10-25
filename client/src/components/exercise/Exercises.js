@@ -8,6 +8,7 @@ import Exercise from './Exercise'
 import { deleteExerciseAsync } from '../../state/exerciseSlice'
 import { removeVideoAsync } from '../../state/exerciseSlice'
 import { removePicAsync } from '../../state/exerciseSlice'
+import "../../styling/exercises.css"
 
 function Exercises() {
 
@@ -66,12 +67,12 @@ console.log("exercises are: ", pagination())
     const error = useSelector( state => state.exercise.error )
     return (
         <div>
-            <h3>Exercises page</h3>
+            <h1 className="header">Exercises</h1>
             <CreateExercise/>
 
-            <br/><input onChange={ (e) => setSearchValue(e.target.value) } placeholder="search exercises" type="text" value={searchValue}/>
-            <br/><label>filter</label>
-            <select onChange={(e) => setFilterValue(e.target.value)}>
+            <br/><input className="search-bar" onChange={ (e) => setSearchValue(e.target.value) } placeholder="search exercises" type="text" value={searchValue}/>
+            <br/><label>filter exercises </label>
+            <select className="dropdown" onChange={(e) => setFilterValue(e.target.value)}>
                 <option value="all">all</option>
                 <option value="upper">upper body</option>
                 <option value="lower">lower body</option>
@@ -79,7 +80,7 @@ console.log("exercises are: ", pagination())
                 <option value="core">core</option>
                 <option value="cardio">cardio</option>
             </select>
-            <p>Created exercises: </p>
+            <h2 className="header2">Created exercises </h2>
             <div className="exercise_container">{renderExercises}</div>
             <nav>
                 <div className="paginator">

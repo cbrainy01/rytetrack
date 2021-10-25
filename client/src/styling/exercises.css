@@ -1,0 +1,15 @@
+.header {
+    text-align: center;
+}
+.header2 {
+    text-align: center;
+
+}
+.search-bar {
+    font-size: 1.1em;
+}
+.dropdown {
+    font-size: 1.05em;
+    margin-bottom: 1em;
+    border-radius: 10px;
+}

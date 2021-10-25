@@ -144,8 +144,7 @@ function CreateWorkout({session_id}) {
                 :
             <form onSubmit={handleSubmit}>
                 <br/>
-                <label>select exercise</label>
-                <select onChange={(e) => { const iD = parseInt(e.target.value, 10); setExercise_Id(iD); setFormData({...formData, "exercise_id": iD}) } } value={exercise_id} >
+                <select className="dropdown" onChange={(e) => { const iD = parseInt(e.target.value, 10); setExercise_Id(iD); setFormData({...formData, "exercise_id": iD}) } } value={exercise_id} >
                     <option value="" >select exercise</option>
                     {exercisesDropdown}
                 </select>
@@ -154,7 +153,7 @@ function CreateWorkout({session_id}) {
                 <br/><p>are there plates on both sides? (default is yes)</p>
                 <label>yes</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": true})} /**value={true}*/ />
                 <label>no</label><input type="radio" name="birack" onChange={() => setFormData({...formData, "birack": false})} /*value={false}*/ /><br/>
-                <br/><select name="bar" onChange={handleNumChange}>
+                <br/><select className="dropdown" name="bar" onChange={handleNumChange}>
                     <option value={0}>select barbell type</option>
                     <option value={0}>no bar</option>
                     <option value={45}>standard barbell</option>
@@ -167,22 +166,30 @@ function CreateWorkout({session_id}) {
                
                 
                     {/* <input className="input" onChange={handleNumChange} name="difficulty" placeholder="" ></input><br/> */}
-                <label className="label">degree of difficulti:</label>
-                    <input className="input" onChange={handleNumChange} name="difficulty" placeholder="" ></input><br/>
-                <label className="label">reps:</label>
-                    <input className="input" onChange={handleNumChange} name="reps" placeholder="" ></input><br/>
-                <label className="label">sets:</label>
-                    <input className="input" onChange={handleNumChange} name="sets" placeholder="sets" ></input><br/>
-                <label className="label">rest time:</label>
-                    <input className="input" onChange={handleChange}    name="rest_time" placeholder="rest time(0:00)"></input><br/>
-                <label className="label">average speed:</label>
-                    <input className="input" onChange={handleDecimalChange} name="avg_speed" placeholder="average speed"></input><br/>
-                <label className="label">average incline:</label>
-                    <input className="input" onChange={handleDecimalChange} name="avg_incline" placeholder="average incline"></input><br/>
-                <label className="label">miles:</label>
-                    <input className="input" onChange={handleDecimalChange} name="miles" placeholder="miles"></input><br/>
-                <label className="label">notes:</label>
-                    <textarea className="input" name="notes" placeholder="notes" onChange={handleChange} value={formData.notes} /><br/>
+                
+                <input className="input" onChange={handleNumChange} name="difficulty" placeholder=" " ></input>
+                <label className="label">degree of difficulty:</label><br/>
+                
+                <input className="input" onChange={handleNumChange} name="reps" placeholder=" " ></input>
+                <label className="label">reps:</label><br/>
+                    
+                <input className="input" onChange={handleNumChange} name="sets" placeholder=" " ></input>
+                <label className="label">sets:</label><br/>
+                    
+                <input className="input" onChange={handleChange}    name="rest_time" placeholder=" "></input>
+                <label className="label">rest time:</label><br/>
+                    
+                <input className="input" onChange={handleDecimalChange} name="avg_speed" placeholder=" "></input>
+                <label className="label">average speed:</label><br/>
+                    
+                <input className="input" onChange={handleDecimalChange} name="avg_incline" placeholder=" "></input>
+                <label className="label">average incline:</label><br/>
+                    
+                <input className="input" onChange={handleDecimalChange} name="miles" placeholder=" "></input>
+                <label className="label">miles:</label><br/>
+                    
+                <textarea className="input" name="notes" placeholder=" " onChange={handleChange} value={formData.notes} />
+                <label className="label">notes:</label><br/>
                 
                 { workoutErrors ?  workoutErrors.map( (error) => <p key={uuid()} style={{color: "red"}}>-{error}</p> ): null}
                 <br/><button className="add_workout">Add workout</button>

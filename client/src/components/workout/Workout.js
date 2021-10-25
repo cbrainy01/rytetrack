@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux'
 import { editWorkoutAsync } from '../../state/sessionSlice'
 import { setEditMode } from '../../state/sessionSlice'
 import "../../styling/workout.css"
+import "../../styling/createworkout.css"
 
 function Workout({workout}) {
     
@@ -134,7 +135,7 @@ function Workout({workout}) {
     </div> )
     const exercisesDropdown = exercises.map( (exercise) => <option key={uuid()} value={exercise.id} >{exercise.name}</option>  )
     const displayPlateArrangement = Object.keys(workout.plate_arrangement).map( (key) => <div key={uuid()}>
-         <h3>{key}: </h3><p>{workout.plate_arrangement[key]}</p>
+         <h3>{key}:  {workout.plate_arrangement[key]}</h3>
      </div> )
     // console.log("plate arrangement: ", Object.keys(workout.plate_arrangement) )
     return (
@@ -165,7 +166,6 @@ function Workout({workout}) {
                     <option value={15}>curl bar</option>
                 </select><br/>
 
-                <p>pics of what the bars look like</p>
                 <input onChange={handleNumChange} name="difficulty" placeholder="degree of difficulty(0-10)" value={formData.difficulty}></input><br/>
                 <input onChange={handleNumChange} name="reps" placeholder="reps" value={formData.reps}></input><br/>
                 <input onChange={handleNumChange} name="sets" placeholder="sets" value={formData.sets}></input><br/>
@@ -184,7 +184,7 @@ function Workout({workout}) {
             : 
             <>
             
-            <p>exercise name: {workout.exercise_name}</p> 
+            <h3 className="workout-name">{workout.exercise_name}</h3> 
             {workout.sets ? <p>sets: {workout.sets}</p>  : null}
             {workout.reps ? <p>reps: {workout.reps}</p>  : null}
             {workout.weight ? <p>weight: {workout.weight}</p> : <p>weight: 0</p>} 
@@ -195,11 +195,11 @@ function Workout({workout}) {
             {workout.miles ? <p>miles: {workout.miles}</p>  : null}
             {workout.notes ? <p>notes: {workout.notes}</p> : null}
             {displayPlateArrangement} 
-            <button onClick={() => dispatch(setEditMode(workout.id))}>edit workout</button>
+            <button className="btn" onClick={() => dispatch(setEditMode(workout.id))}>edit workout</button>
 
             </>
             }
-            <button onClick={handleWorkoutDelete}>remove workout</button>
+            <button className="btn" onClick={handleWorkoutDelete}>remove workout</button>
         </div>
     )
 }

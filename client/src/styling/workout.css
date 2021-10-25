@@ -13,3 +13,10 @@
     grid-template-columns: repeat(auto-fit, 20rem);
     justify-content: center;
   }
+  .workout-name {
+    text-decoration: underline;
+  }
+  /* .btn {
+    position: inherit;
+    margin-bottom: -100px;
+  } */

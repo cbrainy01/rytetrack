@@ -1,51 +1,43 @@
+.createworkout form {
+    position: relative;
+}
 .input {
-        /* position: relative;
-        top: 0;
-        left: 0;
-        width: 25%;
-        height: 100%;
-        border: 2px solid gray;
-        border-radius: 0.6rem;
-        color: #0a0607;
-        outline: none;
-        padding: .5rem;
-        background: white;
-        margin-left: 15%; */
-  
-}
-.input:hover {
-    border-color: #069fc5;
-}
-.input:focus {
-    border-color: #0a0607;
-}
-
-/* .input:focus ~ .label, .input:not(:placeholder-shown).input:not(:focus) ~.label {
-    top: -0.5rem;
-    font-size: 0.8rem;
-    left: 0.8rem;
-
-} */
-
-.input:focus ~ .label,
-.input:not(:placeholder-shown).input:not(:focus) ~ .label {
-  top: -0.5rem;
-  font-size: 0.8rem;
-  left: 0.8rem;
+    /* border: none; */
+    border: 2px solid #fff;
+    border-radius: 5px;
+    /* border: none;
+    border-bottom: 2px solid #fff; */
+    background-color: white;
+    outline: none;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 1em;
+    color: black;
+    min-width: 60vmin;
+    margin-bottom: 1em;
 }
 
 .label {
-    position: relative;
-    font-size: 1.5em;
-    /* left: 11rem; */
-    /* top: -0.1rem; */
-    padding: 0 0.5rem;
-    color: red;
-    /* color: #0a0607; */
-    cursor: text;
-    transition: top 200ms ease-in, left 200ms ease-in, font-size 200ms ease-in;
-    /* background-color: blueviolet; */
+    position: absolute;
+    margin-top: 3.5px;
+    left: 5px;
+    color: black;
+    transition: transform 0.2s ease-in-out;
 }
+
+.input:focus + label, .input:not(:placeholder-shown) + label {
+    transform: translateY(-1em);
+    font-size: .8em;
+    /* background-color: #3a0a0a; */
+    /* margin-bottom: 50px; */
+} 
+/* .input:focus ~ .label {
+    transform: translateY(-20px);
+    font-size: 15px;
+    color: #4158d0
+} */
+/* .input:focus + .label, .input:not(:placeholder-shown) + .label {
+    transform: translateY(-10em);
+} */
 
 .plate_layout {
     display: flex;
@@ -77,4 +69,94 @@
 .add_workout:hover {
     transform: scale(1.05);
 }
+.dropdown {
+    font-size: 1.05em;
+    margin-bottom: 1em;
+    border-radius: 10px;
+}
 
+
+/*-------------------------------------------------------------------------------*/
+/* .input {
+        
+    height: 100%;
+    border: none;
+    border-bottom: 2px solid silver;
+    font-size: 15px;
+    position: relative;
+        top: 0;
+        left: 0;
+        width: 25%;
+        height: 100%;
+        border: 2px solid gray;
+        border-radius: 0.6rem;
+        color: #0a0607;
+        outline: none;
+        padding: .5rem;
+        background: white;
+        margin-left: 15%;
+  
+}
+.wrapper {
+    width: 400px;
+    background: #fff;
+    padding: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.wrapper .input-data {
+    height: 40px;
+    width: 100%;
+    position: relative;
+}
+.wrapper .input-data input {
+    height: 100%;
+    width: 100%;
+    border: none;
+    font-size: 17px;
+    border-bottom: 2px solid silver;
+}
+.wrapper .input-data label {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    color: grey;
+    pointer-events: none;
+    transition: all 0.3s ease;
+}
+.input-data input:focus ~ label {
+    transform: translateY(-20px);
+    font-size: 15px;
+    color: #4158d0
+}
+.input-data input:focus ~ input {
+    border: none
+}
+
+
+.input:hover {
+    border-color: #069fc5;
+}
+.input:focus {
+    border-color: #0a0607;
+} 
+
+.input:focus ~ .label, .input:not(:placeholder-shown).input:not(:focus) ~.label {
+    top: -0.5rem;
+    font-size: 0.8rem;
+    left: 0.8rem;
+
+}
+
+ .input:focus ~ .label,
+.input:not(:placeholder-shown).input:not(:focus) ~ .label {
+  top: -0.5rem;
+  font-size: 0.8rem;
+  left: 0.8rem;
+}
+
+.label {
+    position: relative;
+     
+    color: grey;
+    pointer-events: none;
+} */
