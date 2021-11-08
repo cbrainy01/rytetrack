@@ -34,15 +34,19 @@ function Navbar() {
                         {/* <NavLink to="/" activeStyle>
                             Home
                         </NavLink> */}
-                        <NavLink to="/exercises" activeStyle>
+                        { isAuthorized ? <NavLink to="/exercises" activeStyle>
                             Exercises
-                        </NavLink>
-                        <NavLink to="/sessions" activeStyle>
+                        </NavLink> : null }
+                        { isAuthorized ? <NavLink to="/sessions" activeStyle>
                             Sessions
-                        </NavLink>
-                        <NavLink onClick={handleStatisticsClick} to="/statistics" activeStyle>
+                        </NavLink> : null }
+                        { isAuthorized ? <NavLink onClick={handleStatisticsClick} to="/statistics" activeStyle>
                             Statistics
-                        </NavLink>
+                        </NavLink>  : null }
+                        
+                        
+                        
+                        
                         {isAuthorized ? null : <NavBtn><NavBtnLink to="/signup">Sign up</NavBtnLink></NavBtn>}
                         {isAuthorized ? null : <NavBtn><NavBtnLink to="/login">Login</NavBtnLink></NavBtn>}
                         {isAuthorized ? 
