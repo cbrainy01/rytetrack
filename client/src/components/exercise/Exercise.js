@@ -101,14 +101,12 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
         setDemo( e.target.files[0] )
     }
     function handleAddPicture() {
-        console.log("in the works")
         const picInfo = {exercise_id: exercise.id, new_demo: demo}
 
         if( exercise.demos === null && demo === null ) {alert("no file selected")}
-        else if(exercise.demos === null && demo !== null) {dispatch( addPicAsync({exercise_id: exercise.id, new_demo: demo}) )}
+        else if(exercise.demos === null && demo !== null) { dispatch( addPicAsync({exercise_id: exercise.id, new_demo: demo}) ) }
         else if( exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
         else if( exercise.demos.length === 1 && demo === null ) {alert("no file selected")}
-        // if(demo !== null && exercise.demos.length >= 2) { alert("you can only have 2 demo pics") }
         else { dispatch( addPicAsync({exercise_id: exercise.id, new_demo: demo}) ) }
 
     }
@@ -129,8 +127,7 @@ function Exercise({ onExerciseDelete, onRemoveVideo, exercise}) {
             <option value="core">core</option>
         </select><br/>
         <textarea name="description" placeholder="description" onChange={handleChange} value={formDataEdit.description} /><br/>
-        {/* <input onChange={handleDemo1Select} type="file" name="demo_1" /><br/>
-        <input onChange={handleDemo2Select} type="file" name="demo_2" /><br/> */}
+         
         <label>Is this a cardiovascular exercise?</label><br/>
         <label>yes</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={true} />
         <label>no</label><input type="radio" name="is_cardio" onChange={handleRadioChange} value={false} /><br/>

@@ -30,15 +30,10 @@ function Navbar() {
                     
                     <Bars />
                     <NavMenu>
-                        {/* <NavLink to="/signup" activeStyle>
-                            Signup
-                        </NavLink>
-                        <NavLink to="/login" activeStyle>
-                            Login
-                        </NavLink> */}
-                        <NavLink to="/" activeStyle>
+                        
+                        {/* <NavLink to="/" activeStyle>
                             Home
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink to="/exercises" activeStyle>
                             Exercises
                         </NavLink>
@@ -63,33 +58,7 @@ function Navbar() {
                         
                     </NavMenu>
                 </Nav>
-             {/* <nav>
-             <li>
-                <Link to="/signup"> Signup</Link>
-            </li>
-            <li>
-                <Link  to="/login"> Login</Link>
-            </li>
-            <li>
-                <Link  to="/"> Home</Link>
-            </li>
-            <li>
-                <Link  to="/exercises">Exercises</Link>
-            </li>
-            <li>
-                <Link  to="/sessions">Sessions</Link>
-            </li>
-            <li>
-                <Link  to="/statistics">Statistics</Link>
-            </li>
-            </nav> */}
-            {/* add dispatch for sessionLogout */}
-           
-           {/* <button onClick={ () => { 
-                dispatch( exerciseLogout() );
-                dispatch( sessionLogout() );
-                dispatch( userLogout(history) );
-                } }>logout</button> */}
+      
         </div>
     )
 }
