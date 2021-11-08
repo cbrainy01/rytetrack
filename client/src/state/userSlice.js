@@ -152,7 +152,7 @@ const userSlice = createSlice({
              else {state.isAuthorized = false; state.status = "idle"}
         },
         [fetchUserInfo.pending](state) {state.status = "loading"},
-        [fetchUserInfo.rejected](state) {state.errors.push("rejected for some reason") },
+        [fetchUserInfo.rejected](state) { state.status = "idle"; state.errors.push("rejected for some reason") },
     }
 })
 
